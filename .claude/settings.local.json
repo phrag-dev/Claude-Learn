@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "WebFetch(domain:stitch.withgoogle.com)",
+      "WebFetch(domain:github.com)",
+      "Bash(openssl version:*)",
+      "Bash(bash:*)"
+    ]
+  }
+}
