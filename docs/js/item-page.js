@@ -135,7 +135,7 @@
     function setupCaptureResponseModal(itemId) {
         var modal = document.getElementById("capture-response-modal");
         var openBtn = document.getElementById("capture-response-btn");
-        var closeBtn = modal ? modal.querySelector("[data-dismiss='modal']") : null;
+        var closeBtns = modal ? modal.querySelectorAll("[data-dismiss='modal']") : [];
         var saveBtn = document.getElementById("capture-response-save");
         var textarea = document.getElementById("capture-response-text");
         var checklistEl = document.getElementById("capture-response-checklist");
@@ -173,7 +173,7 @@
         }
 
         openBtn.addEventListener("click", openModal);
-        if (closeBtn) closeBtn.addEventListener("click", closeModal);
+        closeBtns.forEach(function (btn) { btn.addEventListener("click", closeModal); });
         modal.addEventListener("click", function (e) {
             if (e.target === modal) closeModal();
         });
