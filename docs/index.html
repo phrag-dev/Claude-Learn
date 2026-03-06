@@ -28,7 +28,7 @@
             </button>
         </div>
         <div class="sidebar-footer">
-            <span class="last-updated">Updated: 2026-03-06 06:58 UTC</span>
+            <span class="last-updated">Updated: 2026-03-06 07:13 UTC</span>
         </div>
     </nav>
 
@@ -78,40 +78,138 @@
 </div>
 
 <div class="recent-section">
-    <h3>Learning Items</h3>
-    <div class="item-list">
-        <a href="item/001.html" class="item-row status-learning">
-            <span class="item-id">#001</span>
-            <span class="item-topic">Skills v2 / Claude Code implementation</span>
-            <span class="badge badge-learning">LEARNING</span>
-        </a>
-        <a href="item/002.html" class="item-row status-open">
-            <span class="item-id">#002</span>
-            <span class="item-topic">ArcGIS</span>
-            <span class="badge badge-open">OPEN</span>
-        </a>
-        <a href="item/003.html" class="item-row status-open">
-            <span class="item-id">#003</span>
-            <span class="item-topic">Learning Dashboard (GitHub Pages)</span>
-            <span class="badge badge-open">OPEN</span>
-        </a>
-        <a href="item/004.html" class="item-row status-open">
-            <span class="item-id">#004</span>
-            <span class="item-topic">Python</span>
-            <span class="badge badge-open">OPEN</span>
-        </a>
-        <a href="item/005.html" class="item-row status-open">
-            <span class="item-id">#005</span>
-            <span class="item-topic">Windows Task Scheduler</span>
-            <span class="badge badge-open">OPEN</span>
-        </a>
+    <div class="section-header-row">
+        <h3>Learning Items</h3>
+        <button class="btn btn-sm btn-action" id="add-topic-btn">+ Add Topic</button>
+    </div>
+    <div class="item-list" id="learning-items">
+        <div class="item-row-managed" data-item-id="002" data-item-status="open">
+            <a href="item/002.html" class="item-row-link">
+                <span class="item-id">#002</span>
+                <span class="item-topic">ArcGIS</span>
+            </a>
+            <div class="item-row-controls">
+                <select class="item-status-select" data-item-id="002" title="Change status">
+                    <option value="OPEN" selected>Open</option>
+                    <option value="LEARNING">Learning</option>
+                    <option value="CLOSED">Closed</option>
+                </select>
+                <select class="item-skill-select" data-item-id="002" title="Link skill">
+                    <option value="">No skill</option>
+                    <option value="repo-safety">repo-safety</option>
+                    <option value="secrets">secrets</option>
+                </select>
+            </div>
+        </div>
+        <div class="item-row-managed" data-item-id="003" data-item-status="open">
+            <a href="item/003.html" class="item-row-link">
+                <span class="item-id">#003</span>
+                <span class="item-topic">Learning Dashboard (GitHub Pages)</span>
+            </a>
+            <div class="item-row-controls">
+                <select class="item-status-select" data-item-id="003" title="Change status">
+                    <option value="OPEN" selected>Open</option>
+                    <option value="LEARNING">Learning</option>
+                    <option value="CLOSED">Closed</option>
+                </select>
+                <select class="item-skill-select" data-item-id="003" title="Link skill">
+                    <option value="">No skill</option>
+                    <option value="repo-safety">repo-safety</option>
+                    <option value="secrets">secrets</option>
+                </select>
+            </div>
+        </div>
+        <div class="item-row-managed" data-item-id="004" data-item-status="open">
+            <a href="item/004.html" class="item-row-link">
+                <span class="item-id">#004</span>
+                <span class="item-topic">Python</span>
+            </a>
+            <div class="item-row-controls">
+                <select class="item-status-select" data-item-id="004" title="Change status">
+                    <option value="OPEN" selected>Open</option>
+                    <option value="LEARNING">Learning</option>
+                    <option value="CLOSED">Closed</option>
+                </select>
+                <select class="item-skill-select" data-item-id="004" title="Link skill">
+                    <option value="">No skill</option>
+                    <option value="repo-safety">repo-safety</option>
+                    <option value="secrets">secrets</option>
+                </select>
+            </div>
+        </div>
+        <div class="item-row-managed" data-item-id="001" data-item-status="learning">
+            <a href="item/001.html" class="item-row-link">
+                <span class="item-id">#001</span>
+                <span class="item-topic">Skills v2 / Claude Code implementation</span>
+            </a>
+            <div class="item-row-controls">
+                <select class="item-status-select" data-item-id="001" title="Change status">
+                    <option value="OPEN">Open</option>
+                    <option value="LEARNING" selected>Learning</option>
+                    <option value="CLOSED">Closed</option>
+                </select>
+                <select class="item-skill-select" data-item-id="001" title="Link skill">
+                    <option value="">No skill</option>
+                    <option value="repo-safety">repo-safety</option>
+                    <option value="secrets">secrets</option>
+                </select>
+            </div>
+        </div>
+        <div class="item-row-managed" data-item-id="005" data-item-status="open">
+            <a href="item/005.html" class="item-row-link">
+                <span class="item-id">#005</span>
+                <span class="item-topic">Windows Task Scheduler</span>
+            </a>
+            <div class="item-row-controls">
+                <select class="item-status-select" data-item-id="005" title="Change status">
+                    <option value="OPEN" selected>Open</option>
+                    <option value="LEARNING">Learning</option>
+                    <option value="CLOSED">Closed</option>
+                </select>
+                <select class="item-skill-select" data-item-id="005" title="Link skill">
+                    <option value="">No skill</option>
+                    <option value="repo-safety">repo-safety</option>
+                    <option value="secrets">secrets</option>
+                </select>
+            </div>
+        </div>
     </div>
 </div>
 
-<div class="recent-section">
-    <h3>Recent Captures</h3>
-    <div id="recent-notes">
+<div class="recent-section collapsed-section">
+    <div class="section-header-row">
+        <h3>Recent Captures</h3>
+        <button class="btn btn-sm btn-text" id="recent-captures-toggle">Show</button>
+    </div>
+    <div id="recent-notes" class="collapsible-content hidden">
         <p class="text-muted">No captured notes yet. Use the bar below to start.</p>
+    </div>
+</div>
+
+<!-- Add Topic Modal -->
+<div class="modal-overlay hidden" id="add-topic-modal">
+    <div class="modal-dialog">
+        <div class="modal-header">
+            <h3>Add Learning Topic</h3>
+            <button class="modal-close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label for="new-topic-name">Topic Name</label>
+                <input type="text" id="new-topic-name" placeholder="e.g. Docker, TypeScript, AWS Lambda...">
+            </div>
+            <div class="form-group">
+                <label for="new-topic-status">Initial Status</label>
+                <select id="new-topic-status">
+                    <option value="OPEN" selected>Open</option>
+                    <option value="LEARNING">Learning</option>
+                </select>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-sm btn-text" data-dismiss="modal">Cancel</button>
+            <button class="btn btn-sm btn-action" id="save-topic-btn">Add Topic</button>
+        </div>
     </div>
 </div>
     </main>

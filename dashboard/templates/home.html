@@ -53,22 +53,69 @@
 </div>
 
 <div class="recent-section">
-    <h3>Learning Items</h3>
-    <div class="item-list">
-        {% for item in learning %}
-        <a href="{{ base_path }}item/{{ item.id }}.html" class="item-row status-{{ item.status | lower }}">
-            <span class="item-id">#{{ item.id }}</span>
-            <span class="item-topic">{{ item.topic }}</span>
-            <span class="badge badge-{{ item.status | lower }}">{{ item.status }}</span>
-        </a>
+    <div class="section-header-row">
+        <h3>Learning Items</h3>
+        <button class="btn btn-sm btn-action" id="add-topic-btn">+ Add Topic</button>
+    </div>
+    <div class="item-list" id="learning-items">
+        {% for item in learning | sort(attribute='topic') %}
+        <div class="item-row-managed" data-item-id="{{ item.id }}" data-item-status="{{ item.status | lower }}">
+            <a href="{{ base_path }}item/{{ item.id }}.html" class="item-row-link">
+                <span class="item-id">#{{ item.id }}</span>
+                <span class="item-topic">{{ item.topic }}</span>
+            </a>
+            <div class="item-row-controls">
+                <select class="item-status-select" data-item-id="{{ item.id }}" title="Change status">
+                    <option value="OPEN"{% if item.status == "OPEN" %} selected{% endif %}>Open</option>
+                    <option value="LEARNING"{% if item.status == "LEARNING" %} selected{% endif %}>Learning</option>
+                    <option value="CLOSED"{% if item.status == "CLOSED" %} selected{% endif %}>Closed</option>
+                </select>
+                <select class="item-skill-select" data-item-id="{{ item.id }}" title="Link skill">
+                    <option value="">No skill</option>
+                    {% for skill in skills %}
+                    <option value="{{ skill.name }}">{{ skill.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
         {% endfor %}
     </div>
 </div>
 
-<div class="recent-section">
-    <h3>Recent Captures</h3>
-    <div id="recent-notes">
+<div class="recent-section collapsed-section">
+    <div class="section-header-row">
+        <h3>Recent Captures</h3>
+        <button class="btn btn-sm btn-text" id="recent-captures-toggle">Show</button>
+    </div>
+    <div id="recent-notes" class="collapsible-content hidden">
         <p class="text-muted">No captured notes yet. Use the bar below to start.</p>
+    </div>
+</div>
+
+<!-- Add Topic Modal -->
+<div class="modal-overlay hidden" id="add-topic-modal">
+    <div class="modal-dialog">
+        <div class="modal-header">
+            <h3>Add Learning Topic</h3>
+            <button class="modal-close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label for="new-topic-name">Topic Name</label>
+                <input type="text" id="new-topic-name" placeholder="e.g. Docker, TypeScript, AWS Lambda...">
+            </div>
+            <div class="form-group">
+                <label for="new-topic-status">Initial Status</label>
+                <select id="new-topic-status">
+                    <option value="OPEN" selected>Open</option>
+                    <option value="LEARNING">Learning</option>
+                </select>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-sm btn-text" data-dismiss="modal">Cancel</button>
+            <button class="btn btn-sm btn-action" id="save-topic-btn">Add Topic</button>
+        </div>
     </div>
 </div>
 {% endblock %}

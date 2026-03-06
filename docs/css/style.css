@@ -223,6 +223,59 @@ a:hover { text-decoration: underline; }
     font-size: 0.9rem;
 }
 
+/* Managed item rows (home page) */
+.item-row-managed {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: 6px;
+    transition: background 0.15s;
+}
+.item-row-managed:hover { background: var(--bg-hover); }
+
+.item-row-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex: 1;
+    text-decoration: none;
+    color: var(--text-primary);
+}
+.item-row-link:hover { color: var(--accent); }
+
+.item-row-controls {
+    display: flex;
+    gap: 0.4rem;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.item-status-select,
+.item-skill-select {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    color: var(--text-primary);
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    cursor: pointer;
+}
+.item-status-select:focus,
+.item-skill-select:focus { border-color: var(--accent); outline: none; }
+
+.local-badge {
+    font-size: 0.6rem;
+    background: rgba(210, 153, 34, 0.15);
+    color: var(--yellow);
+    padding: 0.1rem 0.35rem;
+    border-radius: 4px;
+    white-space: nowrap;
+}
+
+/* Collapsible sections */
+.collapsible-content.hidden { display: none; }
+
 /* === Tables === */
 .data-table {
     width: 100%;
