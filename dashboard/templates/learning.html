@@ -8,6 +8,10 @@
     <p class="page-description">All learning items by status. Managed in LEARNING_TRACKER.md.</p>
 </div>
 
+<div class="search-bar">
+    <input type="text" id="learning-search" class="search-input" placeholder="Filter items..." autocomplete="off">
+</div>
+
 <div class="kanban">
     {% set statuses = ["OPEN", "LEARNING", "CLOSED"] %}
     {% for status in statuses %}
@@ -19,15 +23,15 @@
         </div>
         {% if status_items %}
             {% for item in status_items %}
-            <div class="kanban-card">
+            <a href="{{ base_path }}item/{{ item.id }}.html" class="kanban-card kanban-card-link">
                 <div class="card-id">#{{ item.id }}</div>
                 <div class="card-topic">{{ item.topic }}</div>
                 {% if item.notes_doc %}
                 <div class="card-doc">
-                    <a href="https://github.com/" class="doc-link" title="{{ item.notes_doc }}">{{ item.notes_doc | replace("Notes/topics/", "") }}</a>
+                    <span class="doc-link" title="{{ item.notes_doc }}">{{ item.notes_doc | replace("Notes/topics/", "") }}</span>
                 </div>
                 {% endif %}
-            </div>
+            </a>
             {% endfor %}
         {% else %}
             <div class="kanban-empty">No items</div>

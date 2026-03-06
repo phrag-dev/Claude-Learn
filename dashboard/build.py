@@ -255,6 +255,35 @@ def load_audits(use_local: bool) -> list[dict]:
     return audits
 
 
+def get_github_repo_url() -> str:
+    """Get the GitHub repo URL for linking to files."""
+    return "https://github.com/phrag-dev/Claude-Learn"
+
+
+def get_item_topics(item: dict, all_topics: list) -> list[dict]:
+    """Get topic files related to a specific learning item."""
+    item_id = item["id"]
+    notes_doc = item.get("notes_doc")
+    related = []
+    repo_url = get_github_repo_url()
+
+    for topic in all_topics:
+        filename = topic["filename"]
+        # Match by ID prefix (e.g. 002_arcgis.md, 002_notes.md)
+        if filename.startswith(f"{item_id}_"):
+            t = dict(topic)
+            t["github_url"] = f"{repo_url}/blob/master/Notes/topics/{filename}"
+            related.append(t)
+        # Match by notes_doc reference
+        elif notes_doc and filename in notes_doc:
+            t = dict(topic)
+            t["github_url"] = f"{repo_url}/blob/master/Notes/topics/{filename}"
+            if t not in related:
+                related.append(t)
+
+    return related
+
+
 def build_meta(learning_counts: dict, skills: list, audits: list, bugs: list) -> dict:
     """Build metadata dict with timestamp and counts."""
 
@@ -340,12 +369,39 @@ def main():
     ]
 
     for template_name, output_name, page_id in pages:
-        render_page(env, template_name, output_name, active_page=page_id, **shared_context)
+        render_page(env, template_name, output_name, active_page=page_id, base_path="", **shared_context)
+
+    # 3b. Render per-item detail pages
+    print("\n[3b/4] Rendering item detail pages...")
+    item_dir = OUTPUT_DIR / "item"
+    item_dir.mkdir(parents=True, exist_ok=True)
+
+    repo_url = get_github_repo_url()
+    for item in learning:
+        item_topics = get_item_topics(item, topics)
+        # Add GitHub URL for notes_doc
+        item_ctx = dict(item)
+        if item.get("notes_doc"):
+            item_ctx["notes_doc_url"] = f"{repo_url}/blob/master/{item['notes_doc']}"
+        else:
+            item_ctx["notes_doc_url"] = ""
+
+        template = env.get_template("item.html")
+        html = template.render(
+            active_page="learning",
+            base_path="../",
+            item=item_ctx,
+            item_topics=item_topics,
+            **shared_context,
+        )
+        output_path = item_dir / f"{item['id']}.html"
+        output_path.write_text(html, encoding="utf-8")
+        print(f"  Rendered {output_path}")
 
     # 4. Summary
     print("\n[4/4] Build complete!")
     print(f"  Output: {OUTPUT_DIR}")
-    print(f"  Pages:  {len(pages)} rendered")
+    print(f"  Pages:  {len(pages)} + {len(learning)} item pages rendered")
     print(f"  Data:   6 JSON files")
     print(f"  Time:   {meta['last_updated']}")
     print()

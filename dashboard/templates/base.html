@@ -6,7 +6,7 @@
     <meta http-equiv="Content-Security-Policy"
           content="default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self' https://api.github.com; img-src 'self'; font-src 'self'; base-uri 'self'; form-action 'none';">
     <title>{% block title %}Dashboard{% endblock %} — Claude_Learn</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="{{ base_path }}css/style.css">
 </head>
 <body>
     <nav class="sidebar">
@@ -15,12 +15,18 @@
             <span class="subtitle">Learning Dashboard</span>
         </div>
         <ul class="nav-links">
-            <li><a href="index.html" class="{% if active_page == 'home' %}active{% endif %}">Home</a></li>
-            <li><a href="learning.html" class="{% if active_page == 'learning' %}active{% endif %}">Learning</a></li>
-            <li><a href="skills.html" class="{% if active_page == 'skills' %}active{% endif %}">Skills</a></li>
-            <li><a href="audits.html" class="{% if active_page == 'audits' %}active{% endif %}">Audits</a></li>
-            <li><a href="bugs.html" class="{% if active_page == 'bugs' %}active{% endif %}">Bugs</a></li>
+            <li><a href="{{ base_path }}index.html" class="{% if active_page == 'home' %}active{% endif %}">Home</a></li>
+            <li><a href="{{ base_path }}learning.html" class="{% if active_page == 'learning' %}active{% endif %}">Learning</a></li>
+            <li><a href="{{ base_path }}skills.html" class="{% if active_page == 'skills' %}active{% endif %}">Skills</a></li>
+            <li><a href="{{ base_path }}audits.html" class="{% if active_page == 'audits' %}active{% endif %}">Audits</a></li>
+            <li><a href="{{ base_path }}bugs.html" class="{% if active_page == 'bugs' %}active{% endif %}">Bugs</a></li>
         </ul>
+        <div class="sidebar-search">
+            <button id="open-commander" class="commander-trigger" title="Quick jump (Ctrl+K)">
+                <span class="commander-trigger-text">Jump to...</span>
+                <kbd class="commander-kbd">Ctrl+K</kbd>
+            </button>
+        </div>
         <div class="sidebar-footer">
             <span class="last-updated">Updated: {{ meta.last_updated }}</span>
         </div>
@@ -89,9 +95,11 @@
         <span id="sync-indicator" class="sync-indicator" title="Sync status"></span>
     </div>
 
-    <script src="js/crypto.js"></script>
-    <script src="js/capture.js"></script>
-    <script src="js/sync.js"></script>
-    <script src="js/dashboard.js"></script>
+    <script src="{{ base_path }}js/crypto.js"></script>
+    <script src="{{ base_path }}js/capture.js"></script>
+    <script src="{{ base_path }}js/sync.js"></script>
+    <script src="{{ base_path }}js/commander.js"></script>
+    <script src="{{ base_path }}js/item-page.js"></script>
+    <script src="{{ base_path }}js/dashboard.js"></script>
 </body>
 </html>

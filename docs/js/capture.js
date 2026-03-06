@@ -170,6 +170,7 @@ var Capture = (function () {
                 injectNotesIntoCards();
                 injectRecentNotes();
                 updateSyncIndicator();
+                if (window.ItemPage) window.ItemPage.refresh();
 
                 // Trigger sync if unlocked
                 if (typeof Sync !== "undefined" && DashCrypto.isUnlocked()) {

@@ -21,8 +21,14 @@
             <li><a href="audits.html" class="">Audits</a></li>
             <li><a href="bugs.html" class="">Bugs</a></li>
         </ul>
+        <div class="sidebar-search">
+            <button id="open-commander" class="commander-trigger" title="Quick jump (Ctrl+K)">
+                <span class="commander-trigger-text">Jump to...</span>
+                <kbd class="commander-kbd">Ctrl+K</kbd>
+            </button>
+        </div>
         <div class="sidebar-footer">
-            <span class="last-updated">Updated: 2026-03-06 04:23 UTC</span>
+            <span class="last-updated">Updated: 2026-03-06 04:56 UTC</span>
         </div>
     </nav>
 
@@ -32,50 +38,54 @@
     <p class="page-description">All learning items by status. Managed in LEARNING_TRACKER.md.</p>
 </div>
 
+<div class="search-bar">
+    <input type="text" id="learning-search" class="search-input" placeholder="Filter items..." autocomplete="off">
+</div>
+
 <div class="kanban">
     <div class="kanban-column">
         <div class="kanban-column-header">
             <span class="badge badge-open">OPEN</span>
             <span class="column-count">4</span>
         </div>
-            <div class="kanban-card">
+            <a href="item/002.html" class="kanban-card kanban-card-link">
                 <div class="card-id">#002</div>
                 <div class="card-topic">ArcGIS</div>
                 <div class="card-doc">
-                    <a href="https://github.com/" class="doc-link" title="Notes/topics/002_arcgis.md">002_arcgis.md</a>
+                    <span class="doc-link" title="Notes/topics/002_arcgis.md">002_arcgis.md</span>
                 </div>
-            </div>
-            <div class="kanban-card">
+            </a>
+            <a href="item/003.html" class="kanban-card kanban-card-link">
                 <div class="card-id">#003</div>
                 <div class="card-topic">Learning Dashboard (GitHub Pages)</div>
                 <div class="card-doc">
-                    <a href="https://github.com/" class="doc-link" title="Notes/topics/plan_learning_dashboard.md">plan_learning_dashboard.md</a>
+                    <span class="doc-link" title="Notes/topics/plan_learning_dashboard.md">plan_learning_dashboard.md</span>
                 </div>
-            </div>
-            <div class="kanban-card">
+            </a>
+            <a href="item/004.html" class="kanban-card kanban-card-link">
                 <div class="card-id">#004</div>
                 <div class="card-topic">Python</div>
                 <div class="card-doc">
-                    <a href="https://github.com/" class="doc-link" title="Notes/topics/004_notes.md">004_notes.md</a>
+                    <span class="doc-link" title="Notes/topics/004_notes.md">004_notes.md</span>
                 </div>
-            </div>
-            <div class="kanban-card">
+            </a>
+            <a href="item/005.html" class="kanban-card kanban-card-link">
                 <div class="card-id">#005</div>
                 <div class="card-topic">Windows Task Scheduler</div>
                 <div class="card-doc">
-                    <a href="https://github.com/" class="doc-link" title="Notes/topics/005_task_scheduler.md">005_task_scheduler.md</a>
+                    <span class="doc-link" title="Notes/topics/005_task_scheduler.md">005_task_scheduler.md</span>
                 </div>
-            </div>
+            </a>
     </div>
     <div class="kanban-column">
         <div class="kanban-column-header">
             <span class="badge badge-learning">LEARNING</span>
             <span class="column-count">1</span>
         </div>
-            <div class="kanban-card">
+            <a href="item/001.html" class="kanban-card kanban-card-link">
                 <div class="card-id">#001</div>
                 <div class="card-topic">Skills v2 / Claude Code implementation</div>
-            </div>
+            </a>
     </div>
     <div class="kanban-column">
         <div class="kanban-column-header">
@@ -206,6 +216,8 @@
     <script src="js/crypto.js"></script>
     <script src="js/capture.js"></script>
     <script src="js/sync.js"></script>
+    <script src="js/commander.js"></script>
+    <script src="js/item-page.js"></script>
     <script src="js/dashboard.js"></script>
 </body>
 </html>

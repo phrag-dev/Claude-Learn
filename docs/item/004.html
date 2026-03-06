@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy"
           content="default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self' https://api.github.com; img-src 'self'; font-src 'self'; base-uri 'self'; form-action 'none';">
-    <title>Bugs — Claude_Learn</title>
-    <link rel="stylesheet" href="css/style.css">
+    <title>#004 Python — Claude_Learn</title>
+    <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
     <nav class="sidebar">
@@ -15,11 +15,11 @@
             <span class="subtitle">Learning Dashboard</span>
         </div>
         <ul class="nav-links">
-            <li><a href="index.html" class="">Home</a></li>
-            <li><a href="learning.html" class="">Learning</a></li>
-            <li><a href="skills.html" class="">Skills</a></li>
-            <li><a href="audits.html" class="">Audits</a></li>
-            <li><a href="bugs.html" class="active">Bugs</a></li>
+            <li><a href="../index.html" class="">Home</a></li>
+            <li><a href="../learning.html" class="active">Learning</a></li>
+            <li><a href="../skills.html" class="">Skills</a></li>
+            <li><a href="../audits.html" class="">Audits</a></li>
+            <li><a href="../bugs.html" class="">Bugs</a></li>
         </ul>
         <div class="sidebar-search">
             <button id="open-commander" class="commander-trigger" title="Quick jump (Ctrl+K)">
@@ -34,12 +34,82 @@
 
     <main class="content">
 <div class="page-header">
-    <h2>Bug Register</h2>
-    <p class="page-description">All bugs recorded. Never deleted — status updated only.</p>
+    <div class="item-header-row">
+        <a href="learning.html" class="back-link">&larr; Learning</a>
+        <span class="badge badge-open">OPEN</span>
+    </div>
+    <h2><span class="item-header-id">#004</span> Python</h2>
 </div>
 
-<div class="empty-state">
-    <p>No bugs recorded yet.</p>
+<div class="item-layout">
+    <!-- Main column -->
+    <div class="item-main">
+        <!-- Questions needing answers -->
+        <div class="item-section" id="questions-section">
+            <h3>Open Questions</h3>
+            <div id="item-questions">
+                <p class="text-muted">No questions captured yet.</p>
+            </div>
+        </div>
+
+        <!-- All notes for this item -->
+        <div class="item-section">
+            <h3>Notes &amp; Captures</h3>
+            <div class="note-filters">
+                <button class="filter-btn active" data-note-filter="all">All</button>
+                <button class="filter-btn" data-note-filter="thought">Thoughts</button>
+                <button class="filter-btn" data-note-filter="link">Links</button>
+                <button class="filter-btn" data-note-filter="question">Questions</button>
+                <button class="filter-btn" data-note-filter="answer">Answers</button>
+                <button class="filter-btn" data-note-filter="update">Updates</button>
+            </div>
+            <div id="item-notes">
+                <p class="text-muted">No notes captured yet. Use the bar below to start.</p>
+            </div>
+        </div>
+
+        <!-- Topic files related to this item -->
+        <div class="item-section">
+            <h3>Topic Files</h3>
+            <div class="topic-cards">
+                <div class="topic-card">
+                    <div class="topic-card-title">Notes: Python (004)</div>
+                    <div class="topic-card-file"><code>004_notes.md</code></div>
+                    <div class="topic-card-summary text-muted">**ð­ Thought** â 2026-03-06 03:57</div>
+                    <a href="https://github.com/phrag-dev/Claude-Learn/blob/master/Notes/topics/004_notes.md" target="_blank" rel="noopener" class="topic-card-link">View on GitHub &rarr;</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sidebar panel -->
+    <aside class="item-sidebar">
+        <div class="item-meta-card">
+            <h4>Details</h4>
+            <dl class="meta-list">
+                <dt>Status</dt>
+                <dd><span class="badge badge-open">OPEN</span></dd>
+                <dt>ID</dt>
+                <dd>#004</dd>
+                <dt>Primary Doc</dt>
+                <dd><a href="https://github.com/phrag-dev/Claude-Learn/blob/master/Notes/topics/004_notes.md" target="_blank" rel="noopener">004_notes.md</a></dd>
+                <dt>Notes</dt>
+                <dd id="meta-note-count">0</dd>
+                <dt>Questions</dt>
+                <dd id="meta-question-count">0</dd>
+            </dl>
+        </div>
+
+        <div class="item-meta-card">
+            <h4>Quick Actions</h4>
+            <div class="quick-actions">
+                <button class="btn btn-action" id="ask-claude-btn" title="Open Claude with a question about this topic">Ask Claude</button>
+                <button class="btn btn-action" id="ask-chatgpt-btn" title="Open ChatGPT with a question about this topic">Ask ChatGPT</button>
+                <button class="btn btn-action" id="ask-copilot-btn" title="Open Copilot with a question about this topic">Ask Copilot</button>
+                <button class="btn btn-action" id="search-web-btn" title="Search the web for this topic">Web Search</button>
+            </div>
+        </div>
+    </aside>
 </div>
     </main>
 
@@ -104,11 +174,11 @@
         <span id="sync-indicator" class="sync-indicator" title="Sync status"></span>
     </div>
 
-    <script src="js/crypto.js"></script>
-    <script src="js/capture.js"></script>
-    <script src="js/sync.js"></script>
-    <script src="js/commander.js"></script>
-    <script src="js/item-page.js"></script>
-    <script src="js/dashboard.js"></script>
+    <script src="../js/crypto.js"></script>
+    <script src="../js/capture.js"></script>
+    <script src="../js/sync.js"></script>
+    <script src="../js/commander.js"></script>
+    <script src="../js/item-page.js"></script>
+    <script src="../js/dashboard.js"></script>
 </body>
 </html>

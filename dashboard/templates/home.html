@@ -56,11 +56,11 @@
     <h3>Learning Items</h3>
     <div class="item-list">
         {% for item in learning %}
-        <div class="item-row status-{{ item.status | lower }}">
+        <a href="{{ base_path }}item/{{ item.id }}.html" class="item-row status-{{ item.status | lower }}">
             <span class="item-id">#{{ item.id }}</span>
             <span class="item-topic">{{ item.topic }}</span>
             <span class="badge badge-{{ item.status | lower }}">{{ item.status }}</span>
-        </div>
+        </a>
         {% endfor %}
     </div>
 </div>
