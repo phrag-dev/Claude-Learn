@@ -1,0 +1,26 @@
+[
+  {
+    "id": "001",
+    "topic": "Skills v2 / Claude Code implementation",
+    "status": "LEARNING",
+    "notes_doc": null
+  },
+  {
+    "id": "002",
+    "topic": "ArcGIS",
+    "status": "OPEN",
+    "notes_doc": "Notes/topics/002_arcgis.md"
+  },
+  {
+    "id": "003",
+    "topic": "Learning Dashboard (GitHub Pages)",
+    "status": "OPEN",
+    "notes_doc": "Notes/topics/plan_learning_dashboard.md"
+  },
+  {
+    "id": "004",
+    "topic": "Python",
+    "status": "OPEN",
+    "notes_doc": null
+  }
+]

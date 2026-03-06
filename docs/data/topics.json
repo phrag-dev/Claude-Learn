@@ -1,0 +1,27 @@
+[
+  {
+    "filename": "002_arcgis.md",
+    "title": "ArcGIS \u2014 Learning Package",
+    "summary": "ArcGIS is Esri's suite of GIS (Geographic Information Systems) software for working with spatial data \u2014 maps, geographic analysis, and location-based decision making. The two main platforms are:"
+  },
+  {
+    "filename": "plan_dashboard_capture.md",
+    "title": "Plan: Dashboard Capture System (Living Notes)",
+    "summary": "The dashboard is read-only \u2014 a display board. It needs to be a living tool that captures:"
+  },
+  {
+    "filename": "plan_learning_dashboard.md",
+    "title": "Plan: Learning Dashboard (GitHub Pages)",
+    "summary": "A personal, interactive web dashboard that surfaces everything from Claude_Learn \u2014 learning items, skill inventory, repo safety audits, and workflow status \u2014 accessible from anywhere via GitHub Pages."
+  },
+  {
+    "filename": "security_dashboard_sync.md",
+    "title": "Security Analysis: Dashboard GitHub API Sync",
+    "summary": "A GitHub fine-grained Personal Access Token (PAT) that can write to ONE repository (Claude_Learn). This token lives in the user's browser and is used to commit captured notes directly to the repo."
+  },
+  {
+    "filename": "workflow_gsd_integration.md",
+    "title": "Workflow: Claude_Learn + GSD Integration",
+    "summary": "Claude_Learn is the brain. GSD Sandbox is the workshop. They stay separate."
+  }
+]

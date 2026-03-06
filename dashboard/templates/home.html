@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h2>Dashboard</h2>
+    <p class="page-description">Overview of all tracked items across Claude_Learn.</p>
+</div>
+
+<div class="summary-cards">
+    <div class="card summary-card">
+        <div class="card-label">Learning Items</div>
+        <div class="card-counts">
+            <span class="count open">{{ learning_counts.OPEN }} Open</span>
+            <span class="count learning">{{ learning_counts.LEARNING }} Learning</span>
+            <span class="count closed">{{ learning_counts.CLOSED }} Closed</span>
+        </div>
+        <a href="learning.html" class="card-link">View tracker →</a>
+    </div>
+
+    <div class="card summary-card">
+        <div class="card-label">Skills</div>
+        <div class="card-counts">
+            <span class="count total">{{ skills | length }} installed</span>
+        </div>
+        <a href="skills.html" class="card-link">View inventory →</a>
+    </div>
+
+    <div class="card summary-card">
+        <div class="card-label">Repo Audits</div>
+        <div class="card-counts">
+            {% set blocked = audits | selectattr("verdict", "equalto", "BLOCKED") | list %}
+            {% set review = audits | selectattr("verdict", "equalto", "MANUAL REVIEW") | list %}
+            {% set approved = audits | selectattr("verdict", "equalto", "AUTO-INSTALL") | list %}
+            <span class="count blocked">{{ blocked | length }} Blocked</span>
+            <span class="count review">{{ review | length }} Review</span>
+            <span class="count approved">{{ approved | length }} Approved</span>
+        </div>
+        <a href="audits.html" class="card-link">View audits →</a>
+    </div>
+
+    <div class="card summary-card">
+        <div class="card-label">Bugs</div>
+        <div class="card-counts">
+            {% set open_bugs = bugs | selectattr("status", "equalto", "OPEN") | list %}
+            {% set resolved_bugs = bugs | selectattr("status", "equalto", "RESOLVED") | list %}
+            <span class="count open">{{ open_bugs | length }} Open</span>
+            <span class="count closed">{{ resolved_bugs | length }} Resolved</span>
+        </div>
+        <a href="bugs.html" class="card-link">View register →</a>
+    </div>
+</div>
+
+<div class="recent-section">
+    <h3>Learning Items</h3>
+    <div class="item-list">
+        {% for item in learning %}
+        <div class="item-row status-{{ item.status | lower }}">
+            <span class="item-id">#{{ item.id }}</span>
+            <span class="item-topic">{{ item.topic }}</span>
+            <span class="badge badge-{{ item.status | lower }}">{{ item.status }}</span>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="recent-section">
+    <h3>Recent Captures</h3>
+    <div id="recent-notes">
+        <p class="text-muted">No captured notes yet. Use the bar below to start.</p>
+    </div>
+</div>
+{% endblock %}

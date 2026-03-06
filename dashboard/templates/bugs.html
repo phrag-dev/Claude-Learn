@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}Bugs{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h2>Bug Register</h2>
+    <p class="page-description">All bugs recorded. Never deleted — status updated only.</p>
+</div>
+
+{% if bugs %}
+<div class="filter-bar" data-target=".bug-row">
+    <button class="filter-btn active" data-filter="all">All ({{ bugs | length }})</button>
+    {% set open_bugs = bugs | selectattr("status", "equalto", "OPEN") | list %}
+    {% set resolved_bugs = bugs | selectattr("status", "equalto", "RESOLVED") | list %}
+    {% set wontfix_bugs = bugs | selectattr("status", "equalto", "WONTFIX") | list %}
+    <button class="filter-btn" data-filter="open">Open ({{ open_bugs | length }})</button>
+    <button class="filter-btn" data-filter="resolved">Resolved ({{ resolved_bugs | length }})</button>
+    <button class="filter-btn" data-filter="wontfix">Wontfix ({{ wontfix_bugs | length }})</button>
+</div>
+
+<table class="data-table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Date</th>
+            <th>Source</th>
+            <th>Description</th>
+            <th>Status</th>
+            <th>Resolution</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for bug in bugs %}
+        <tr class="bug-row status-{{ bug.status | lower }}">
+            <td><code>{{ bug.id }}</code></td>
+            <td>{{ bug.date }}</td>
+            <td>{{ bug.source }}</td>
+            <td>{{ bug.description }}</td>
+            <td><span class="badge badge-{{ bug.status | lower }}">{{ bug.status }}</span></td>
+            <td>{{ bug.resolution }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<div class="empty-state">
+    <p>No bugs recorded yet.</p>
+</div>
+{% endif %}
+{% endblock %}

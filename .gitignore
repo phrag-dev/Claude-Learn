@@ -1,2 +1,7 @@
 # Secrets - never commit
 .secrets/
+
+# Python
+dashboard/.venv/
+__pycache__/
+*.pyc

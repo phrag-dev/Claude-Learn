@@ -70,6 +70,10 @@ Claude_Learn/
 | ID | Topic | Status |
 |----|-------|--------|
 | 001 | Skills v2 / Claude Code implementation | LEARNING |
+| 002 | ArcGIS | OPEN |
+| 003 | Learning Dashboard (GitHub Pages) | OPEN |
+| 004 | Python | OPEN |
+| 005 | Windows Task Scheduler | OPEN |
 
 ---
 
@@ -92,6 +96,15 @@ Bugs are never deleted — status updated only.
 
 ---
 
+## Workflows
+
+- **GSD Integration:** `Notes/topics/workflow_gsd_integration.md`
+  - Claude_Learn = brain (what to learn, what to build)
+  - GSD Sandbox (`G:\Dev\GSD_Sandbox`) = workshop (how to build it)
+  - Simple skills → build directly here. Complex skills → build in GSD, install globally.
+
+---
+
 ## Secrets Management
 
 Managed via `.secrets/secrets.sh`. See `CLAUDE.md` for full usage.
@@ -109,3 +122,4 @@ Never output secret values in chat. Always verify `.secrets/` is in `.gitignore`
 | `Notes/LEARNING_SYSTEM.md` | Rules for the learning tracker |
 | `bug/BUG_REGISTER.md` | Bug register |
 | `log/` | Session logs |
+| `Notes/topics/workflow_gsd_integration.md` | GSD integration workflow |

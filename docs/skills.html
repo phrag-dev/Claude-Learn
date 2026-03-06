@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy"
+          content="default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self' https://api.github.com; img-src 'self'; font-src 'self'; base-uri 'self'; form-action 'none';">
+    <title>Skills — Claude_Learn</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class="sidebar">
+        <div class="sidebar-header">
+            <h1>Claude_Learn</h1>
+            <span class="subtitle">Learning Dashboard</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html" class="">Home</a></li>
+            <li><a href="learning.html" class="">Learning</a></li>
+            <li><a href="skills.html" class="active">Skills</a></li>
+            <li><a href="audits.html" class="">Audits</a></li>
+            <li><a href="bugs.html" class="">Bugs</a></li>
+        </ul>
+        <div class="sidebar-footer">
+            <span class="last-updated">Updated: 2026-03-06 03:08 UTC</span>
+        </div>
+    </nav>
+
+    <main class="content">
+<div class="page-header">
+    <h2>Skills Inventory</h2>
+    <p class="page-description">Global Claude Code skills installed at ~/.claude/skills/.</p>
+</div>
+
+<table class="data-table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><code>/repo-safety</code></td>
+            <td>Safety audit for GitHub repos before adding to Claude. Scores 0-10. Blocks unsafe repos, flags marginal ones for manual review, auto-installs safe ones.</td>
+            <td><span class="badge badge-active">active</span></td>
+        </tr>
+        <tr>
+            <td><code>/secrets</code></td>
+            <td>Manage project API keys and secrets securely. Never committed to git.</td>
+            <td><span class="badge badge-active">active</span></td>
+        </tr>
+    </tbody>
+</table>
+    </main>
+
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Sync Settings</h3>
+                <button class="modal-close" data-dismiss="modal">&times;</button>
+            </div>
+            <div id="settings-setup" class="modal-body">
+                <p class="text-muted">Enter your GitHub PAT to enable auto-sync. Token is encrypted with your passphrase and never leaves this browser.</p>
+                <p class="text-muted" style="margin-top:0.5rem; font-size:0.75rem;">Required scope: Fine-grained PAT → Claude_Learn repo only → Contents: Read &amp; Write</p>
+                <div class="form-group">
+                    <label for="pat-input">GitHub PAT</label>
+                    <input type="password" id="pat-input" placeholder="github_pat_..." autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label for="repo-input">Repository (owner/name)</label>
+                    <input type="text" id="repo-input" placeholder="username/Claude_Learn" autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label for="passphrase-input">Encryption passphrase</label>
+                    <input type="password" id="passphrase-input" placeholder="Used to encrypt your token at rest" autocomplete="off">
+                </div>
+                <button id="save-settings-btn" class="btn btn-primary">Encrypt &amp; Save</button>
+                <div id="settings-status" class="form-status"></div>
+            </div>
+            <div id="settings-active" class="modal-body hidden">
+                <p class="text-muted">Sync is configured. Token is encrypted at rest.</p>
+                <div class="form-group">
+                    <label for="unlock-input">Passphrase (unlock this session)</label>
+                    <input type="password" id="unlock-input" placeholder="Enter passphrase to unlock" autocomplete="off">
+                </div>
+                <button id="unlock-btn" class="btn btn-primary">Unlock</button>
+                <button id="clear-settings-btn" class="btn btn-danger">Remove Token</button>
+                <div id="unlock-status" class="form-status"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Capture Bar -->
+    <div id="capture-bar" class="capture-bar">
+        <select id="capture-item" class="capture-select">
+            <option value="">Item...</option>
+            <option value="001">001 — Skills v2 / Claude Code implementation</option>
+            <option value="002">002 — ArcGIS</option>
+            <option value="003">003 — Learning Dashboard (GitHub Pages)</option>
+            <option value="004">004 — Python</option>
+        </select>
+        <select id="capture-type" class="capture-select capture-type">
+            <option value="thought">Thought</option>
+            <option value="link">Link</option>
+            <option value="question">Question</option>
+            <option value="answer">Answer</option>
+            <option value="update">Update</option>
+        </select>
+        <input type="text" id="capture-input" class="capture-input" placeholder="Capture a note..." autocomplete="off">
+        <button id="capture-save" class="btn btn-capture">Save</button>
+        <button id="capture-settings" class="btn btn-icon" title="Sync settings">&#9881;</button>
+        <span id="sync-indicator" class="sync-indicator" title="Sync status"></span>
+    </div>
+
+    <script src="js/crypto.js"></script>
+    <script src="js/capture.js"></script>
+    <script src="js/sync.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>

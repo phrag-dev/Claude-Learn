@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}Audits{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h2>Repo Safety Audits</h2>
+    <p class="page-description">GitHub repos audited via /repo-safety before adding to Claude.</p>
+</div>
+
+{% if audits %}
+<div class="audit-grid">
+    {% for audit in audits %}
+    {% set score_num = audit.score.split("/")[0] | int if "/" in audit.score else 0 %}
+    {% if score_num <= 5 %}
+        {% set score_class = "score-blocked" %}
+    {% elif score_num <= 9 %}
+        {% set score_class = "score-review" %}
+    {% else %}
+        {% set score_class = "score-approved" %}
+    {% endif %}
+    <div class="card audit-card">
+        <div class="score {{ score_class }}">{{ audit.score }}</div>
+        <div class="repo-name">{{ audit.repo_name }}</div>
+        <div class="audit-date">Audited: {{ audit.date }}</div>
+        {% if audit.url %}
+        <div style="margin-top: 0.4rem;">
+            <a href="{{ audit.url }}" class="card-link" target="_blank">{{ audit.url }}</a>
+        </div>
+        {% endif %}
+        <div style="margin-top: 0.5rem;">
+            {% if audit.verdict == "BLOCKED" %}
+            <span class="badge badge-blocked">BLOCKED</span>
+            {% elif audit.verdict == "MANUAL REVIEW" %}
+            <span class="badge badge-review">MANUAL REVIEW</span>
+            {% elif audit.verdict == "AUTO-INSTALL" %}
+            <span class="badge badge-approved">AUTO-INSTALL</span>
+            {% endif %}
+        </div>
+        {% if audit.stale %}
+        <div class="stale-warning">Stale — audit older than 30 days, recheck recommended</div>
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="empty-state">
+    <p>No audits recorded. Run <code>/repo-safety audit &lt;URL&gt;</code> to audit a repo.</p>
+</div>
+{% endif %}
+{% endblock %}

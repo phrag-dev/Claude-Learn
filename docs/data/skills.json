@@ -1,0 +1,14 @@
+[
+  {
+    "name": "repo-safety",
+    "description": "Safety audit for GitHub repos before adding to Claude. Scores 0-10. Blocks unsafe repos, flags marginal ones for manual review, auto-installs safe ones.",
+    "path": "C:\\Users\\bensca\\.claude\\skills\\repo-safety",
+    "status": "active"
+  },
+  {
+    "name": "secrets",
+    "description": "Manage project API keys and secrets securely. Never committed to git.",
+    "path": "C:\\Users\\bensca\\.claude\\skills\\secrets",
+    "status": "active"
+  }
+]

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy"
+          content="default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self' https://api.github.com; img-src 'self'; font-src 'self'; base-uri 'self'; form-action 'none';">
+    <title>Learning — Claude_Learn</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class="sidebar">
+        <div class="sidebar-header">
+            <h1>Claude_Learn</h1>
+            <span class="subtitle">Learning Dashboard</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html" class="">Home</a></li>
+            <li><a href="learning.html" class="active">Learning</a></li>
+            <li><a href="skills.html" class="">Skills</a></li>
+            <li><a href="audits.html" class="">Audits</a></li>
+            <li><a href="bugs.html" class="">Bugs</a></li>
+        </ul>
+        <div class="sidebar-footer">
+            <span class="last-updated">Updated: 2026-03-06 03:08 UTC</span>
+        </div>
+    </nav>
+
+    <main class="content">
+<div class="page-header">
+    <h2>Learning Tracker</h2>
+    <p class="page-description">All learning items by status. Managed in LEARNING_TRACKER.md.</p>
+</div>
+
+<div class="kanban">
+    <div class="kanban-column">
+        <div class="kanban-column-header">
+            <span class="badge badge-open">OPEN</span>
+            <span class="column-count">3</span>
+        </div>
+            <div class="kanban-card">
+                <div class="card-id">#002</div>
+                <div class="card-topic">ArcGIS</div>
+                <div class="card-doc">
+                    <a href="https://github.com/" class="doc-link" title="Notes/topics/002_arcgis.md">002_arcgis.md</a>
+                </div>
+            </div>
+            <div class="kanban-card">
+                <div class="card-id">#003</div>
+                <div class="card-topic">Learning Dashboard (GitHub Pages)</div>
+                <div class="card-doc">
+                    <a href="https://github.com/" class="doc-link" title="Notes/topics/plan_learning_dashboard.md">plan_learning_dashboard.md</a>
+                </div>
+            </div>
+            <div class="kanban-card">
+                <div class="card-id">#004</div>
+                <div class="card-topic">Python</div>
+            </div>
+    </div>
+    <div class="kanban-column">
+        <div class="kanban-column-header">
+            <span class="badge badge-learning">LEARNING</span>
+            <span class="column-count">1</span>
+        </div>
+            <div class="kanban-card">
+                <div class="card-id">#001</div>
+                <div class="card-topic">Skills v2 / Claude Code implementation</div>
+            </div>
+    </div>
+    <div class="kanban-column">
+        <div class="kanban-column-header">
+            <span class="badge badge-closed">CLOSED</span>
+            <span class="column-count">0</span>
+        </div>
+            <div class="kanban-empty">No items</div>
+    </div>
+</div>
+
+<div class="recent-section" style="margin-top: 2rem;">
+    <h3>Topic Files</h3>
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>File</th>
+                <th>Title</th>
+                <th>Summary</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><code>002_arcgis.md</code></td>
+                <td>ArcGIS — Learning Package</td>
+                <td class="text-muted">ArcGIS is Esri&#39;s suite of GIS (Geographic Information Systems) software for working with spatial data — maps, geographic analysis, and location-based decision making. The two main platforms are:</td>
+            </tr>
+            <tr>
+                <td><code>plan_dashboard_capture.md</code></td>
+                <td>Plan: Dashboard Capture System (Living Notes)</td>
+                <td class="text-muted">The dashboard is read-only — a display board. It needs to be a living tool that captures:</td>
+            </tr>
+            <tr>
+                <td><code>plan_learning_dashboard.md</code></td>
+                <td>Plan: Learning Dashboard (GitHub Pages)</td>
+                <td class="text-muted">A personal, interactive web dashboard that surfaces everything from Claude_Learn — learning items, skill inventory, repo safety audits, and workflow status — accessible from anywhere via GitHub Pages.</td>
+            </tr>
+            <tr>
+                <td><code>security_dashboard_sync.md</code></td>
+                <td>Security Analysis: Dashboard GitHub API Sync</td>
+                <td class="text-muted">A GitHub fine-grained Personal Access Token (PAT) that can write to ONE repository (Claude_Learn). This token lives in the user&#39;s browser and is used to commit captured notes directly to the repo.</td>
+            </tr>
+            <tr>
+                <td><code>workflow_gsd_integration.md</code></td>
+                <td>Workflow: Claude_Learn + GSD Integration</td>
+                <td class="text-muted">Claude_Learn is the brain. GSD Sandbox is the workshop. They stay separate.</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+    </main>
+
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Sync Settings</h3>
+                <button class="modal-close" data-dismiss="modal">&times;</button>
+            </div>
+            <div id="settings-setup" class="modal-body">
+                <p class="text-muted">Enter your GitHub PAT to enable auto-sync. Token is encrypted with your passphrase and never leaves this browser.</p>
+                <p class="text-muted" style="margin-top:0.5rem; font-size:0.75rem;">Required scope: Fine-grained PAT → Claude_Learn repo only → Contents: Read &amp; Write</p>
+                <div class="form-group">
+                    <label for="pat-input">GitHub PAT</label>
+                    <input type="password" id="pat-input" placeholder="github_pat_..." autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label for="repo-input">Repository (owner/name)</label>
+                    <input type="text" id="repo-input" placeholder="username/Claude_Learn" autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label for="passphrase-input">Encryption passphrase</label>
+                    <input type="password" id="passphrase-input" placeholder="Used to encrypt your token at rest" autocomplete="off">
+                </div>
+                <button id="save-settings-btn" class="btn btn-primary">Encrypt &amp; Save</button>
+                <div id="settings-status" class="form-status"></div>
+            </div>
+            <div id="settings-active" class="modal-body hidden">
+                <p class="text-muted">Sync is configured. Token is encrypted at rest.</p>
+                <div class="form-group">
+                    <label for="unlock-input">Passphrase (unlock this session)</label>
+                    <input type="password" id="unlock-input" placeholder="Enter passphrase to unlock" autocomplete="off">
+                </div>
+                <button id="unlock-btn" class="btn btn-primary">Unlock</button>
+                <button id="clear-settings-btn" class="btn btn-danger">Remove Token</button>
+                <div id="unlock-status" class="form-status"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Capture Bar -->
+    <div id="capture-bar" class="capture-bar">
+        <select id="capture-item" class="capture-select">
+            <option value="">Item...</option>
+            <option value="001">001 — Skills v2 / Claude Code implementation</option>
+            <option value="002">002 — ArcGIS</option>
+            <option value="003">003 — Learning Dashboard (GitHub Pages)</option>
+            <option value="004">004 — Python</option>
+        </select>
+        <select id="capture-type" class="capture-select capture-type">
+            <option value="thought">Thought</option>
+            <option value="link">Link</option>
+            <option value="question">Question</option>
+            <option value="answer">Answer</option>
+            <option value="update">Update</option>
+        </select>
+        <input type="text" id="capture-input" class="capture-input" placeholder="Capture a note..." autocomplete="off">
+        <button id="capture-save" class="btn btn-capture">Save</button>
+        <button id="capture-settings" class="btn btn-icon" title="Sync settings">&#9881;</button>
+        <span id="sync-indicator" class="sync-indicator" title="Sync status"></span>
+    </div>
+
+    <script src="js/crypto.js"></script>
+    <script src="js/capture.js"></script>
+    <script src="js/sync.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>

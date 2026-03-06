@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}Learning{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h2>Learning Tracker</h2>
+    <p class="page-description">All learning items by status. Managed in LEARNING_TRACKER.md.</p>
+</div>
+
+<div class="kanban">
+    {% set statuses = ["OPEN", "LEARNING", "CLOSED"] %}
+    {% for status in statuses %}
+    {% set status_items = learning | selectattr("status", "equalto", status) | list %}
+    <div class="kanban-column">
+        <div class="kanban-column-header">
+            <span class="badge badge-{{ status | lower }}">{{ status }}</span>
+            <span class="column-count">{{ status_items | length }}</span>
+        </div>
+        {% if status_items %}
+            {% for item in status_items %}
+            <div class="kanban-card">
+                <div class="card-id">#{{ item.id }}</div>
+                <div class="card-topic">{{ item.topic }}</div>
+                {% if item.notes_doc %}
+                <div class="card-doc">
+                    <a href="https://github.com/" class="doc-link" title="{{ item.notes_doc }}">{{ item.notes_doc | replace("Notes/topics/", "") }}</a>
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="kanban-empty">No items</div>
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+
+{% if topics %}
+<div class="recent-section" style="margin-top: 2rem;">
+    <h3>Topic Files</h3>
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>File</th>
+                <th>Title</th>
+                <th>Summary</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for topic in topics %}
+            <tr>
+                <td><code>{{ topic.filename }}</code></td>
+                <td>{{ topic.title }}</td>
+                <td class="text-muted">{{ topic.summary }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endif %}
+{% endblock %}

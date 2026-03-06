@@ -5,7 +5,13 @@
       "WebFetch(domain:stitch.withgoogle.com)",
       "WebFetch(domain:github.com)",
       "Bash(openssl version:*)",
-      "Bash(bash:*)"
+      "Bash(bash:*)",
+      "Bash(npx get-shit-done-cc@latest:*)",
+      "Bash(\"dashboard/.venv/Scripts/python\":*)",
+      "Bash(python:*)",
+      "Bash(gh api:*)",
+      "Bash(schtasks:*)",
+      "Bash(powershell.exe:*)"
     ]
   }
 }

@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Skills{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h2>Skills Inventory</h2>
+    <p class="page-description">Global Claude Code skills installed at ~/.claude/skills/.</p>
+</div>
+
+{% if skills %}
+<table class="data-table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for skill in skills %}
+        <tr>
+            <td><code>/{{ skill.name }}</code></td>
+            <td>{{ skill.description }}</td>
+            <td><span class="badge badge-{{ skill.status | lower }}">{{ skill.status }}</span></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<div class="empty-state">
+    <p>No skills data available. Run build with <code>--local-data</code> to populate.</p>
+</div>
+{% endif %}
+{% endblock %}
