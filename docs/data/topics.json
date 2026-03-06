@@ -20,6 +20,11 @@
     "summary": "Windows Task Scheduler (`taskschd.msc`) is a built-in Windows service that runs programs, scripts, or commands automatically based on triggers (time, event, logon, boot, idle, etc)."
   },
   {
+    "filename": "006_notes.md",
+    "title": "Notes: DEVOPS SQL General Required knowledge (006)",
+    "summary": "\ud83d\udcad Thought \u2014 2026-03-06 10:40"
+  },
+  {
     "filename": "plan_dashboard_capture.md",
     "title": "Plan: Dashboard Capture System (Living Notes)",
     "summary": "The dashboard is read-only \u2014 a display board. It needs to be a living tool that captures:"
