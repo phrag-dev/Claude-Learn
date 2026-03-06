@@ -301,6 +301,126 @@ document.addEventListener("DOMContentLoaded", function () {
 
     updatePendingBanner();
 
+    // === Rebuild banner — poll GitHub Actions after commit ===
+    function showRebuildBanner(auth) {
+        var banner = document.getElementById("pending-changes-banner");
+        if (!banner) return;
+
+        banner.innerHTML =
+            '<span class="rebuild-status">' +
+                '<span class="rebuild-spinner"></span> Rebuilding dashboard — waiting for GitHub Action...' +
+            '</span>';
+        banner.classList.remove("hidden");
+
+        if (syncStatusEl) {
+            syncStatusEl.innerHTML = '<span class="sync-pending">Rebuilding...</span>';
+        }
+
+        AppLog.info("Rebuild", "Polling GitHub Actions for rebuild status");
+        pollRebuildStatus(auth, banner, 0);
+    }
+
+    function pollRebuildStatus(auth, banner, attempt) {
+        if (attempt > 30) {
+            // 60 seconds max — give up
+            banner.innerHTML =
+                '<span class="rebuild-status">Rebuild is taking longer than expected. ' +
+                '<button class="btn btn-sm btn-action" id="refresh-timeout-btn">Refresh now</button></span>';
+            document.getElementById("refresh-timeout-btn").addEventListener("click", function () {
+                location.reload(true);
+            });
+            AppLog.warn("Rebuild", "Polling timed out after 30 attempts");
+            return;
+        }
+
+        setTimeout(function () {
+            fetch("https://api.github.com/repos/" + auth.repo + "/actions/runs?per_page=3&branch=master", {
+                headers: {
+                    "Authorization": "Bearer " + auth.token,
+                    "Accept": "application/vnd.github+json"
+                }
+            }).then(function (r) {
+                if (!r.ok) throw new Error("HTTP " + r.status);
+                return r.json();
+            }).then(function (data) {
+                var runs = data.workflow_runs || [];
+                // Find the Rebuild Dashboard run
+                var rebuildRun = null;
+                for (var i = 0; i < runs.length; i++) {
+                    if (runs[i].name === "Rebuild Dashboard") {
+                        rebuildRun = runs[i];
+                        break;
+                    }
+                }
+
+                if (!rebuildRun) {
+                    AppLog.debug("Rebuild", "No rebuild run found yet, retrying...");
+                    pollRebuildStatus(auth, banner, attempt + 1);
+                    return;
+                }
+
+                AppLog.debug("Rebuild", "Run status: " + rebuildRun.status + " / " + rebuildRun.conclusion);
+
+                if (rebuildRun.status === "completed") {
+                    if (rebuildRun.conclusion === "success") {
+                        banner.innerHTML =
+                            '<span class="rebuild-status rebuild-done">' +
+                                'Dashboard rebuilt successfully. ' +
+                                '<button class="btn btn-sm btn-action" id="refresh-page-btn">Refresh to update</button>' +
+                            '</span>';
+                        document.getElementById("refresh-page-btn").addEventListener("click", function () {
+                            location.reload(true);
+                        });
+                        if (syncStatusEl) {
+                            syncStatusEl.innerHTML = '<span class="sync-ok">Rebuild complete — refresh to update</span>';
+                        }
+                        AppLog.info("Rebuild", "Dashboard rebuilt successfully");
+                    } else {
+                        banner.innerHTML =
+                            '<span class="rebuild-status rebuild-failed">' +
+                                'Rebuild failed (' + rebuildRun.conclusion + '). ' +
+                                '<a href="' + rebuildRun.html_url + '" target="_blank">View run</a>' +
+                            '</span>';
+                        AppLog.error("Rebuild", "Rebuild failed: " + rebuildRun.conclusion);
+                    }
+                } else {
+                    // Still running
+                    pollRebuildStatus(auth, banner, attempt + 1);
+                }
+            }).catch(function (err) {
+                AppLog.error("Rebuild", "Poll failed: " + err.message);
+                if (err.message && err.message.indexOf("403") !== -1) {
+                    // PAT doesn't have Actions read permission — show timed refresh
+                    AppLog.warn("Rebuild", "No Actions API access — showing timed refresh");
+                    showTimedRefresh(banner, 15);
+                    return;
+                }
+                pollRebuildStatus(auth, banner, attempt + 1);
+            });
+        }, 2000);
+    }
+
+    function showTimedRefresh(banner, seconds) {
+        var remaining = seconds;
+        function tick() {
+            banner.innerHTML =
+                '<span class="rebuild-status rebuild-done">' +
+                    'Committed. Refreshing in <strong>' + remaining + 's</strong> for rebuild... ' +
+                    '<button class="btn btn-sm btn-action" id="refresh-now-btn">Refresh now</button>' +
+                '</span>';
+            document.getElementById("refresh-now-btn").addEventListener("click", function () {
+                location.reload(true);
+            });
+            if (remaining <= 0) {
+                location.reload(true);
+                return;
+            }
+            remaining--;
+            setTimeout(tick, 1000);
+        }
+        tick();
+    }
+
     // === Sync status on load ===
     var TRACKER_PATH = "/contents/Notes/LEARNING_TRACKER.md";
     var syncStatusEl = document.getElementById("sync-status");
@@ -582,17 +702,17 @@ document.addEventListener("DOMContentLoaded", function () {
                 localStorage.removeItem(LOCAL_ITEMS_KEY);
 
                 if (commitStatus) {
-                    commitStatus.textContent = "Committed to GitHub successfully.";
+                    commitStatus.textContent = "Committed. Waiting for rebuild...";
                     commitStatus.className = "commit-status success";
                 }
                 confirmBtn.disabled = false;
                 updatePendingBanner();
 
-                // Auto-close after brief delay
+                // Close modal, show rebuild banner
                 setTimeout(function () {
                     commitModal.classList.add("hidden");
-                    if (syncStatusEl) syncStatusEl.innerHTML = '<span class="sync-ok">Committed and in sync</span>';
-                }, 1500);
+                    showRebuildBanner(auth);
+                }, 1000);
             }).catch(function (err) {
                 AppLog.error("Commit", "Commit failed: " + err.message);
                 if (commitStatus) {
