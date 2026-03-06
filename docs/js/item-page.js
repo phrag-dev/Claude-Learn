@@ -134,9 +134,69 @@
         return h2 ? h2.textContent.replace("#" + itemId, "").trim() : "this topic";
     }
 
-    function setupAIButtons(itemId) {
+    function buildSynthesisPrompt(itemId) {
         var topic = getTopicForItem(itemId);
+        var notes = (typeof Capture !== "undefined") ? Capture.getNotesForItem(itemId) : [];
 
+        var questions = [];
+        var thoughts = [];
+        var links = [];
+        var answers = [];
+        var updates = [];
+
+        notes.forEach(function (n) {
+            switch (n.type) {
+                case "question": questions.push(n.content); break;
+                case "thought": thoughts.push(n.content); break;
+                case "link": links.push(n.content); break;
+                case "answer": answers.push(n.content); break;
+                case "update": updates.push(n.content); break;
+            }
+        });
+
+        if (notes.length === 0) {
+            return "I'm learning about " + topic + ". I haven't captured any notes yet. Please help me get started — what are the key concepts I should understand first?";
+        }
+
+        var prompt = "I am learning about: " + topic + "\n\n";
+        prompt += "Below is everything I have captured so far — questions, thoughts, links, and notes. ";
+        prompt += "They may cover different aspects of the topic and may not be directly related to each other.\n\n";
+        prompt += "Please:\n";
+        prompt += "1. Read all items below\n";
+        prompt += "2. Identify synergies, connections, and common threads across them\n";
+        prompt += "3. Present a brief synopsis of the key themes you've identified\n";
+        prompt += "4. Wait for my confirmation before providing detailed answers\n\n";
+
+        if (questions.length > 0) {
+            prompt += "--- QUESTIONS ---\n";
+            questions.forEach(function (q, i) { prompt += (i + 1) + ". " + q + "\n"; });
+            prompt += "\n";
+        }
+        if (thoughts.length > 0) {
+            prompt += "--- THOUGHTS ---\n";
+            thoughts.forEach(function (t, i) { prompt += (i + 1) + ". " + t + "\n"; });
+            prompt += "\n";
+        }
+        if (answers.length > 0) {
+            prompt += "--- ANSWERS / FINDINGS ---\n";
+            answers.forEach(function (a, i) { prompt += (i + 1) + ". " + a + "\n"; });
+            prompt += "\n";
+        }
+        if (links.length > 0) {
+            prompt += "--- REFERENCE LINKS ---\n";
+            links.forEach(function (l, i) { prompt += (i + 1) + ". " + l + "\n"; });
+            prompt += "\n";
+        }
+        if (updates.length > 0) {
+            prompt += "--- PROGRESS UPDATES ---\n";
+            updates.forEach(function (u, i) { prompt += (i + 1) + ". " + u + "\n"; });
+            prompt += "\n";
+        }
+
+        return prompt;
+    }
+
+    function setupAIButtons(itemId) {
         var providers = {
             claude: function (q) { return "https://claude.ai/new?q=" + encodeURIComponent(q); },
             chatgpt: function (q) { return "https://chatgpt.com/?q=" + encodeURIComponent(q); },
@@ -144,23 +204,14 @@
             web: function (q) { return "https://www.google.com/search?q=" + encodeURIComponent(q); }
         };
 
-        // Sidebar quick action buttons
-        var claudeBtn = document.getElementById("ask-claude-btn");
-        var chatgptBtn = document.getElementById("ask-chatgpt-btn");
-        var copilotBtn = document.getElementById("ask-copilot-btn");
-        var searchBtn = document.getElementById("search-web-btn");
-
-        if (claudeBtn) claudeBtn.addEventListener("click", function () {
-            window.open(providers.claude("Help me learn about " + topic), "_blank");
-        });
-        if (chatgptBtn) chatgptBtn.addEventListener("click", function () {
-            window.open(providers.chatgpt("Help me learn about " + topic), "_blank");
-        });
-        if (copilotBtn) copilotBtn.addEventListener("click", function () {
-            window.open(providers.copilot("Help me learn about " + topic), "_blank");
-        });
-        if (searchBtn) searchBtn.addEventListener("click", function () {
-            window.open(providers.web(topic + " tutorial guide"), "_blank");
+        // Sidebar synthesis buttons
+        var synthProviders = { "synth-claude-btn": "claude", "synth-chatgpt-btn": "chatgpt", "synth-copilot-btn": "copilot" };
+        Object.keys(synthProviders).forEach(function (btnId) {
+            var btn = document.getElementById(btnId);
+            if (btn) btn.addEventListener("click", function () {
+                var prompt = buildSynthesisPrompt(itemId);
+                window.open(providers[synthProviders[btnId]](prompt), "_blank");
+            });
         });
 
         // Per-question "Ask AI" buttons — send the actual question
