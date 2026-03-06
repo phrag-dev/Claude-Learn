@@ -172,11 +172,26 @@ def load_skills(use_local: bool) -> list[dict]:
                     elif line.startswith("description:"):
                         description = line.split(":", 1)[1].strip()
 
+            # Extract content after frontmatter
+            content_lines = []
+            past_frontmatter = False
+            fm_count = 0
+            for line in text.splitlines():
+                if line.strip() == "---":
+                    fm_count += 1
+                    if fm_count == 2:
+                        past_frontmatter = True
+                    continue
+                if past_frontmatter:
+                    content_lines.append(line)
+            content = "\n".join(content_lines).strip()
+
             skills.append({
                 "name": name,
                 "description": description,
                 "path": str(skill_dir),
                 "status": "active",
+                "content": content,
             })
 
         print(f"  Skills: {len(skills)} found locally")
@@ -315,6 +330,71 @@ def render_page(env: Environment, template_name: str, output_name: str, **contex
     print(f"  Rendered {output_path}")
 
 
+def apply_overrides():
+    """Read overrides.json and apply changes to LEARNING_TRACKER.md."""
+
+    overrides_path = DATA_DIR / "overrides.json"
+    if not overrides_path.exists():
+        print("  No overrides.json found in docs/data/ — nothing to apply.")
+        return
+
+    overrides = json.loads(overrides_path.read_text(encoding="utf-8"))
+    status_changes = overrides.get("status_overrides", {})
+    new_items = overrides.get("new_items", [])
+    applied = 0
+
+    print("\n[0/4] Applying overrides from overrides.json...")
+
+    if not TRACKER_PATH.exists():
+        print(f"  ERROR: {TRACKER_PATH} not found — cannot apply overrides.")
+        return
+
+    lines = TRACKER_PATH.read_text(encoding="utf-8").splitlines()
+    updated_lines = []
+
+    for line in lines:
+        if line.strip().startswith("|") and "---" not in line and "ID" not in line.split("|")[1]:
+            cells = [c.strip() for c in line.split("|")]
+            cells = [c for c in cells if c != ""]
+            if len(cells) >= 4:
+                item_id = cells[0]
+                if item_id in status_changes:
+                    old_status = cells[2]
+                    cells[2] = status_changes[item_id]
+                    line = "| " + " | ".join(cells) + " |"
+                    print(f"  #{item_id}: {old_status} -> {status_changes[item_id]}")
+                    applied += 1
+        updated_lines.append(line)
+
+    # Add new items before the --- line at the end
+    if new_items:
+        insert_idx = len(updated_lines)
+        for i in range(len(updated_lines) - 1, -1, -1):
+            if updated_lines[i].strip().startswith("---"):
+                insert_idx = i
+                break
+
+        for item in new_items:
+            new_line = f"| {item['id']} | {item['topic']} | {item['status']} | - |"
+            updated_lines.insert(insert_idx, new_line)
+            print(f"  #{item['id']}: NEW — {item['topic']} ({item['status']})")
+            applied += 1
+            insert_idx += 1
+
+    # Update last updated date
+    from datetime import datetime
+    for i, line in enumerate(updated_lines):
+        if line.strip().startswith("*Last updated:"):
+            updated_lines[i] = f"*Last updated: {datetime.now().strftime('%Y-%m-%d')}*"
+
+    TRACKER_PATH.write_text("\n".join(updated_lines) + "\n", encoding="utf-8")
+    print(f"  Applied {applied} change(s) to {TRACKER_PATH}")
+
+    # Remove overrides.json after applying
+    overrides_path.unlink()
+    print(f"  Removed {overrides_path}")
+
+
 def main():
     parser = argparse.ArgumentParser(description="Build the Claude_Learn dashboard")
     parser.add_argument(
@@ -322,11 +402,20 @@ def main():
         action="store_true",
         help="Read skills and audits from ~/.claude/skills/ (local machine only)",
     )
+    parser.add_argument(
+        "--apply-overrides",
+        action="store_true",
+        help="Apply overrides.json from docs/data/ to LEARNING_TRACKER.md, then rebuild",
+    )
     args = parser.parse_args()
 
     print("=" * 50)
     print("Claude_Learn Dashboard Builder")
     print("=" * 50)
+
+    # 0. Apply overrides if requested
+    if args.apply_overrides:
+        apply_overrides()
 
     # 1. Load data
     print("\n[1/4] Loading data sources...")

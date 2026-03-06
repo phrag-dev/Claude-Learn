@@ -37,8 +37,12 @@
         </div>
 
         <!-- All notes for this item -->
-        <div class="item-section">
-            <h3>Notes &amp; Captures</h3>
+        <div class="item-section" id="notes-section">
+            <div class="section-header-row">
+                <h3>Notes &amp; Captures</h3>
+                <button class="btn btn-sm btn-text" id="notes-toggle">Show</button>
+            </div>
+            <div id="notes-collapsible" class="hidden">
             <div class="note-filters">
                 <button class="filter-btn active" data-note-filter="all">All</button>
                 <button class="filter-btn" data-note-filter="thought">Thoughts</button>
@@ -49,6 +53,7 @@
             </div>
             <div id="item-notes">
                 <p class="text-muted">No notes captured yet. Use the bar below to start.</p>
+            </div>
             </div>
         </div>
 

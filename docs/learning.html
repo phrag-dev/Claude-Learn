@@ -28,7 +28,11 @@
             </button>
         </div>
         <div class="sidebar-footer">
-            <span class="last-updated">Updated: 2026-03-06 07:34 UTC</span>
+            <div class="sidebar-footer-buttons">
+                <button id="open-settings" class="sidebar-settings-btn" title="Sync Settings">Settings</button>
+                <button id="open-logs" class="sidebar-settings-btn" title="App Log (Ctrl+Shift+L)">Logs</button>
+            </div>
+            <span class="last-updated">Updated: 2026-03-06 10:16 UTC</span>
         </div>
     </nav>
 
@@ -70,10 +74,10 @@
         <span class="ll-topic">Skills v2 / Claude Code implementation</span>
         <span class="badge badge-learning">LEARNING</span>
     </a>
-    <a href="item/005.html" class="learning-list-row" data-status="open">
+    <a href="item/005.html" class="learning-list-row" data-status="closed">
         <span class="ll-id">#005</span>
         <span class="ll-topic">Windows Task Scheduler</span>
-        <span class="badge badge-open">OPEN</span>
+        <span class="badge badge-closed">CLOSED</span>
     </a>
 </div>
 
@@ -136,16 +140,17 @@
                 <h3>Sync Settings</h3>
                 <button class="modal-close" data-dismiss="modal">&times;</button>
             </div>
-            <div id="settings-setup" class="modal-body">
+            <!-- Panel 1: No token stored — first-time setup -->
+            <div id="settings-setup" class="modal-body hidden">
                 <p class="text-muted">Enter your GitHub PAT to enable auto-sync. Token is encrypted with your passphrase and never leaves this browser.</p>
-                <p class="text-muted" style="margin-top:0.5rem; font-size:0.75rem;">Required scope: Fine-grained PAT → Claude_Learn repo only → Contents: Read &amp; Write</p>
+                <p class="text-muted" style="margin-top:0.5rem; font-size:0.75rem;">Required scope: Fine-grained PAT &rarr; repo only &rarr; Contents: Read &amp; Write</p>
                 <div class="form-group">
                     <label for="pat-input">GitHub PAT</label>
                     <input type="password" id="pat-input" placeholder="github_pat_..." autocomplete="off">
                 </div>
                 <div class="form-group">
                     <label for="repo-input">Repository (owner/name)</label>
-                    <input type="text" id="repo-input" placeholder="username/Claude_Learn" autocomplete="off">
+                    <input type="text" id="repo-input" placeholder="owner/repo-name" autocomplete="off">
                 </div>
                 <div class="form-group">
                     <label for="passphrase-input">Encryption passphrase</label>
@@ -154,15 +159,36 @@
                 <button id="save-settings-btn" class="btn btn-primary">Encrypt &amp; Save</button>
                 <div id="settings-status" class="form-status"></div>
             </div>
-            <div id="settings-active" class="modal-body hidden">
-                <p class="text-muted">Sync is configured. Token is encrypted at rest.</p>
+            <!-- Panel 2: Token stored but locked — needs passphrase -->
+            <div id="settings-locked" class="modal-body hidden">
+                <p class="text-muted">Sync is configured but locked for this session.</p>
                 <div class="form-group">
-                    <label for="unlock-input">Passphrase (unlock this session)</label>
+                    <label for="unlock-input">Passphrase</label>
                     <input type="password" id="unlock-input" placeholder="Enter passphrase to unlock" autocomplete="off">
                 </div>
-                <button id="unlock-btn" class="btn btn-primary">Unlock</button>
-                <button id="clear-settings-btn" class="btn btn-danger">Remove Token</button>
+                <div class="settings-btn-row">
+                    <button id="unlock-btn" class="btn btn-primary">Unlock</button>
+                    <button id="clear-settings-btn" class="btn btn-danger">Remove Token</button>
+                </div>
                 <div id="unlock-status" class="form-status"></div>
+            </div>
+            <!-- Panel 3: Unlocked — show current config, allow reconfigure -->
+            <div id="settings-unlocked" class="modal-body hidden">
+                <div class="settings-info">
+                    <div class="settings-info-row">
+                        <span class="settings-label">Status</span>
+                        <span class="settings-value sync-ok" id="settings-status-display">Active</span>
+                    </div>
+                    <div class="settings-info-row">
+                        <span class="settings-label">Repository</span>
+                        <span class="settings-value" id="settings-repo-display">—</span>
+                    </div>
+                </div>
+                <div class="settings-btn-row" style="margin-top:1rem;">
+                    <button id="reconfigure-btn" class="btn btn-primary">Reconfigure</button>
+                    <button id="clear-settings-btn-2" class="btn btn-danger">Remove Token</button>
+                </div>
+                <div id="unlocked-status" class="form-status"></div>
             </div>
         </div>
     </div>
@@ -188,11 +214,13 @@
         <button id="capture-save" class="btn btn-capture">Save</button>
     </div>
 
+    <script src="js/logger.js"></script>
     <script src="js/crypto.js"></script>
     <script src="js/capture.js"></script>
     <script src="js/sync.js"></script>
     <script src="js/commander.js"></script>
     <script src="js/item-page.js"></script>
+    <script src="js/skills-page.js"></script>
     <script src="js/dashboard.js"></script>
 </body>
 </html>

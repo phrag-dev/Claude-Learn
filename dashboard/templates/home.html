@@ -55,11 +55,21 @@
 <div class="recent-section">
     <div class="section-header-row">
         <h3>Learning Items</h3>
-        <button class="btn btn-sm btn-action" id="add-topic-btn">+ Add Topic</button>
+        <div style="display:flex;gap:0.5rem;align-items:center;">
+            <span id="sync-status" class="sync-status-text"></span>
+            <button class="btn btn-sm btn-action" id="add-topic-btn">+ Add Topic</button>
+        </div>
+    </div>
+    <div id="pending-changes-banner" class="pending-banner hidden">
+        <span><span class="pending-count">0</span> local change(s) — browser only, not yet committed.</span>
+        <div class="pending-actions">
+            <button class="btn btn-sm btn-commit" id="commit-changes-btn">Commit Changes</button>
+            <button class="btn btn-sm btn-text" id="clear-pending-btn">Clear All</button>
+        </div>
     </div>
     <div class="item-list" id="learning-items">
         {% for item in learning | sort(attribute='topic') %}
-        <div class="item-row-managed" data-item-id="{{ item.id }}" data-item-status="{{ item.status | lower }}">
+        <div class="item-row-managed" data-item-id="{{ item.id }}" data-item-status="{{ item.status | lower }}" data-orig-status="{{ item.status }}">
             <a href="{{ base_path }}item/{{ item.id }}.html" class="item-row-link">
                 <span class="item-id">#{{ item.id }}</span>
                 <span class="item-topic">{{ item.topic }}</span>
@@ -115,6 +125,25 @@
         <div class="modal-footer">
             <button class="btn btn-sm btn-text" data-dismiss="modal">Cancel</button>
             <button class="btn btn-sm btn-action" id="save-topic-btn">Add Topic</button>
+        </div>
+    </div>
+</div>
+
+<!-- Commit Changes Modal -->
+<div class="modal-overlay hidden" id="commit-modal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-header">
+            <h3>Commit Changes</h3>
+            <button class="modal-close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+            <p class="modal-instruction">The following changes will be committed to GitHub.</p>
+            <div id="commit-changes-list" class="commit-list"></div>
+            <div id="commit-status" class="commit-status"></div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-sm btn-text" data-dismiss="modal">Cancel</button>
+            <button class="btn btn-sm btn-commit" id="commit-confirm-btn">Commit to GitHub</button>
         </div>
     </div>
 </div>

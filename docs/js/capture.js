@@ -184,20 +184,55 @@ var Capture = (function () {
             if (e.key === "Enter") doSave();
         });
 
-        // Settings modal
-        if (settingsBtn && modal) {
-            settingsBtn.addEventListener("click", function () {
-                modal.classList.remove("hidden");
-                // Show correct panel
-                if (DashCrypto.hasStoredToken()) {
-                    document.getElementById("settings-setup").classList.add("hidden");
-                    document.getElementById("settings-active").classList.remove("hidden");
-                } else {
-                    document.getElementById("settings-setup").classList.remove("hidden");
-                    document.getElementById("settings-active").classList.add("hidden");
-                }
-            });
+        // Settings modal — 3 panels: setup, locked, unlocked
+        var panelSetup = document.getElementById("settings-setup");
+        var panelLocked = document.getElementById("settings-locked");
+        var panelUnlocked = document.getElementById("settings-unlocked");
 
+        function showSettingsPanel(name) {
+            if (panelSetup) panelSetup.classList.add("hidden");
+            if (panelLocked) panelLocked.classList.add("hidden");
+            if (panelUnlocked) panelUnlocked.classList.add("hidden");
+
+            if (name === "setup" && panelSetup) panelSetup.classList.remove("hidden");
+            if (name === "locked" && panelLocked) panelLocked.classList.remove("hidden");
+            if (name === "unlocked" && panelUnlocked) {
+                panelUnlocked.classList.remove("hidden");
+                var repoDisplay = document.getElementById("settings-repo-display");
+                if (repoDisplay) {
+                    repoDisplay.textContent = localStorage.getItem("claude_learn_repo") || "—";
+                }
+            }
+        }
+
+        function openSettingsModal() {
+            if (!modal) return;
+            modal.classList.remove("hidden");
+            // Pick the right panel
+            if (!DashCrypto.hasStoredToken()) {
+                showSettingsPanel("setup");
+            } else if (DashCrypto.isUnlocked()) {
+                showSettingsPanel("unlocked");
+            } else {
+                showSettingsPanel("locked");
+            }
+        }
+
+        if (settingsBtn) {
+            settingsBtn.addEventListener("click", openSettingsModal);
+        }
+
+        var sidebarSettingsBtn = document.getElementById("open-settings");
+        if (sidebarSettingsBtn) {
+            sidebarSettingsBtn.addEventListener("click", openSettingsModal);
+        }
+
+        var logsBtn = document.getElementById("open-logs");
+        if (logsBtn) {
+            logsBtn.addEventListener("click", function () { AppLog.toggle(); });
+        }
+
+        if (modal) {
             modal.querySelector("[data-dismiss='modal']").addEventListener("click", function () {
                 modal.classList.add("hidden");
             });
@@ -207,7 +242,7 @@ var Capture = (function () {
             });
         }
 
-        // Save settings (encrypt + store token)
+        // Panel 1: Save settings (encrypt + store token)
         var saveSettingsBtn = document.getElementById("save-settings-btn");
         if (saveSettingsBtn) {
             saveSettingsBtn.addEventListener("click", function () {
@@ -231,25 +266,28 @@ var Capture = (function () {
                 status.textContent = "Encrypting...";
                 status.className = "form-status";
 
+                AppLog.info("Settings", "Saving token", { repo: repo, patPrefix: pat.substring(0, 10) + "..." });
                 DashCrypto.saveToken(pat, passphrase).then(function () {
                     sessionStorage.setItem("claude_learn_repo", repo);
                     localStorage.setItem("claude_learn_repo", repo);
-                    // Also unlock for this session
+                    AppLog.info("Settings", "Token encrypted, repo stored", { repo: repo });
                     return DashCrypto.unlockToken(passphrase);
                 }).then(function () {
-                    status.textContent = "Token encrypted and saved. Sync active.";
-                    status.className = "form-status success";
+                    AppLog.info("Settings", "Token unlocked for session");
                     document.getElementById("pat-input").value = "";
                     document.getElementById("passphrase-input").value = "";
+                    status.textContent = "";
                     updateSyncIndicator();
+                    showSettingsPanel("unlocked");
                 }).catch(function (err) {
+                    AppLog.error("Settings", "Save failed: " + err.message);
                     status.textContent = "Error: " + err.message;
                     status.className = "form-status error";
                 });
             });
         }
 
-        // Unlock token for session
+        // Panel 2: Unlock token for session
         var unlockBtn = document.getElementById("unlock-btn");
         if (unlockBtn) {
             unlockBtn.addEventListener("click", function () {
@@ -266,29 +304,45 @@ var Capture = (function () {
                 DashCrypto.unlockToken(passphrase).then(function () {
                     var repo = localStorage.getItem("claude_learn_repo");
                     if (repo) sessionStorage.setItem("claude_learn_repo", repo);
-                    status.textContent = "Unlocked. Sync active for this session.";
-                    status.className = "form-status success";
+                    AppLog.info("Settings", "Session unlocked", { repo: repo });
                     document.getElementById("unlock-input").value = "";
+                    status.textContent = "";
                     updateSyncIndicator();
-                    modal.classList.add("hidden");
+                    showSettingsPanel("unlocked");
                 }).catch(function () {
+                    AppLog.warn("Settings", "Unlock failed — wrong passphrase");
                     status.textContent = "Wrong passphrase.";
                     status.className = "form-status error";
                 });
             });
         }
 
-        // Clear/remove token
-        var clearBtn = document.getElementById("clear-settings-btn");
-        if (clearBtn) {
-            clearBtn.addEventListener("click", function () {
+        // Panel 3: Reconfigure — go back to setup panel
+        var reconfigureBtn = document.getElementById("reconfigure-btn");
+        if (reconfigureBtn) {
+            reconfigureBtn.addEventListener("click", function () {
                 DashCrypto.clearAll();
                 localStorage.removeItem("claude_learn_repo");
-                document.getElementById("unlock-status").textContent = "Token removed.";
-                document.getElementById("unlock-status").className = "form-status";
+                AppLog.info("Settings", "Token cleared for reconfiguration");
                 updateSyncIndicator();
+                showSettingsPanel("setup");
             });
         }
+
+        // Remove token — from locked panel
+        function removeToken() {
+            DashCrypto.clearAll();
+            localStorage.removeItem("claude_learn_repo");
+            AppLog.info("Settings", "Token removed");
+            updateSyncIndicator();
+            showSettingsPanel("setup");
+        }
+
+        var clearBtn = document.getElementById("clear-settings-btn");
+        if (clearBtn) clearBtn.addEventListener("click", removeToken);
+
+        var clearBtn2 = document.getElementById("clear-settings-btn-2");
+        if (clearBtn2) clearBtn2.addEventListener("click", removeToken);
 
         // Inject notes into page
         injectNotesIntoCards();

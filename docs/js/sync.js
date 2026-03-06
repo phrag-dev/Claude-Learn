@@ -39,6 +39,7 @@ var Sync = (function () {
         if (!auth) return Promise.reject(new Error("Not authenticated"));
 
         var url = API_BASE + "/repos/" + auth.repo + path;
+        AppLog.debug("Sync", method + " " + url);
         var opts = {
             method: method,
             headers: {
@@ -89,6 +90,7 @@ var Sync = (function () {
 
         var path = getNotesFilePath(note.item_id);
         var newContent = formatNoteMarkdown(note);
+        AppLog.info("Sync", "Syncing note " + note.id + " to " + path, { type: note.type, item: note.item_id });
 
         // Try to get existing file
         return apiCall("GET", path).then(function (existing) {
@@ -128,7 +130,7 @@ var Sync = (function () {
             Capture.markSynced([note.id]);
             Capture.updateSyncIndicator();
         }).catch(function (err) {
-            console.error("Sync failed for note " + note.id + ":", err.message);
+            AppLog.error("Sync", "Note sync failed: " + note.id + " — " + err.message);
             // Note stays unsynced in localStorage, will retry next time
         });
     }

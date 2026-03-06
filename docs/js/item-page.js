@@ -35,10 +35,14 @@
         html += '<span class="note-icon">' + icon + '</span>';
         html += '<span class="note-content">';
 
-        var urlPattern = /(https?:\/\/[^\s<]+)/g;
-        var content = note.content.replace(/&/g, '&amp;').replace(/</g, '&lt;');
-        content = content.replace(urlPattern, '<a href="$1" target="_blank" rel="noopener">$1</a>');
-        html += content;
+        if (note.type === "answer" && typeof window.renderMarkdown === "function") {
+            html += '<div class="md-rendered">' + window.renderMarkdown(note.content) + '</div>';
+        } else {
+            var urlPattern = /(https?:\/\/[^\s<]+)/g;
+            var content = note.content.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+            content = content.replace(urlPattern, '<a href="$1" target="_blank" rel="noopener">$1</a>');
+            html += content;
+        }
 
         html += '</span>';
         html += '<span class="note-meta">';
@@ -98,13 +102,16 @@
             }
         }
 
-        // Resolved section
+        // Resolved section — hidden when empty, collapsed by default when populated
         if (resolvedContainer) {
             if (resolvedNotes.length === 0) {
                 resolvedContainer.innerHTML = '<p class="text-muted">No resolved items yet.</p>';
                 resolvedContainer.parentElement.classList.add("hidden");
             } else {
                 resolvedContainer.parentElement.classList.remove("hidden");
+                resolvedContainer.parentElement.classList.add("collapsed");
+                var resolvedToggle = document.getElementById("resolved-toggle");
+                if (resolvedToggle) resolvedToggle.textContent = "Show";
                 var rhtml = "";
                 resolvedNotes.forEach(function (n) { rhtml += renderNoteHTML(n); });
                 resolvedContainer.innerHTML = rhtml;
@@ -347,6 +354,17 @@
         }
     }
 
+    function setupNotesToggle() {
+        var toggle = document.getElementById("notes-toggle");
+        var content = document.getElementById("notes-collapsible");
+        if (toggle && content) {
+            toggle.addEventListener("click", function () {
+                var isHidden = content.classList.toggle("hidden");
+                toggle.textContent = isHidden ? "Show" : "Hide";
+            });
+        }
+    }
+
     function refresh() {
         var itemId = getItemId();
         if (itemId) renderNotes(itemId);
@@ -362,6 +380,7 @@
         setupAIButtons(itemId);
         setupCaptureResponseModal(itemId);
         setupResolvedToggle();
+        setupNotesToggle();
     });
 
     window.ItemPage = { refresh: refresh };

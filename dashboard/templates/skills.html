@@ -9,27 +9,49 @@
 </div>
 
 {% if skills %}
-<table class="data-table">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Status</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for skill in skills %}
-        <tr>
-            <td><code>/{{ skill.name }}</code></td>
-            <td>{{ skill.description }}</td>
-            <td><span class="badge badge-{{ skill.status | lower }}">{{ skill.status }}</span></td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+<div class="learning-list">
+    <div class="learning-list-header">
+        <span class="ll-topic">Skill</span>
+        <span class="ll-status">Status</span>
+    </div>
+    {% for skill in skills %}
+    <div class="learning-list-row skill-row" data-skill-name="{{ skill.name }}" tabindex="0">
+        <span class="ll-topic">
+            <code>/{{ skill.name }}</code>
+            <span class="skill-desc">{{ skill.description }}</span>
+        </span>
+        <span class="badge badge-{{ skill.status | lower }}">{{ skill.status }}</span>
+    </div>
+    {% endfor %}
+</div>
+
+<div class="recent-section" style="margin-top: 1.5rem;">
+    <div class="section-header-row">
+        <h3>Linked Learning Items</h3>
+    </div>
+    <div id="skill-links-display">
+        <p class="text-muted">No skills linked to learning items yet. Link skills from the Home page.</p>
+    </div>
+</div>
 {% else %}
 <div class="empty-state">
     <p>No skills data available. Run build with <code>--local-data</code> to populate.</p>
 </div>
 {% endif %}
+
+<!-- Skill Detail Modal -->
+<div class="modal-overlay hidden" id="skill-detail-modal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-header">
+            <h3 id="skill-detail-title">Skill</h3>
+            <button class="modal-close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div id="skill-detail-content" class="md-rendered"></div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-sm btn-text" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+</div>
 {% endblock %}
