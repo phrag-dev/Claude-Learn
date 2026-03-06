@@ -5,7 +5,7 @@
 {% block content %}
 <div class="page-header">
     <div class="item-header-row">
-        <a href="learning.html" class="back-link">&larr; Learning</a>
+        <a href="{{ base_path }}learning.html" class="back-link">&larr; Learning</a>
         <span class="badge badge-{{ item.status | lower }}">{{ item.status }}</span>
     </div>
     <h2><span class="item-header-id">#{{ item.id }}</span> {{ item.topic }}</h2>

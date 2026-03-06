@@ -16,7 +16,7 @@
             <span class="count learning">{{ learning_counts.LEARNING }} Learning</span>
             <span class="count closed">{{ learning_counts.CLOSED }} Closed</span>
         </div>
-        <a href="learning.html" class="card-link">View tracker →</a>
+        <a href="{{ base_path }}learning.html" class="card-link">View tracker →</a>
     </div>
 
     <div class="card summary-card">
@@ -24,7 +24,7 @@
         <div class="card-counts">
             <span class="count total">{{ skills | length }} installed</span>
         </div>
-        <a href="skills.html" class="card-link">View inventory →</a>
+        <a href="{{ base_path }}skills.html" class="card-link">View inventory →</a>
     </div>
 
     <div class="card summary-card">
@@ -37,7 +37,7 @@
             <span class="count review">{{ review | length }} Review</span>
             <span class="count approved">{{ approved | length }} Approved</span>
         </div>
-        <a href="audits.html" class="card-link">View audits →</a>
+        <a href="{{ base_path }}audits.html" class="card-link">View audits →</a>
     </div>
 
     <div class="card summary-card">
@@ -48,7 +48,7 @@
             <span class="count open">{{ open_bugs | length }} Open</span>
             <span class="count closed">{{ resolved_bugs | length }} Resolved</span>
         </div>
-        <a href="bugs.html" class="card-link">View register →</a>
+        <a href="{{ base_path }}bugs.html" class="card-link">View register →</a>
     </div>
 </div>
 
