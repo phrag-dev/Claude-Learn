@@ -13,5 +13,6 @@
 | 005 | Windows Task Scheduler | CLOSED | Notes/topics/005_task_scheduler.md |
 
 | 006 | DEVOPS SQL General Required knowledge | OPEN | - |
+| 007 | General SQL commands | OPEN | - |
 ---
 *Last updated: 2026-03-06*
