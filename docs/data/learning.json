@@ -34,5 +34,11 @@
     "topic": "DEVOPS SQL General Required knowledge",
     "status": "OPEN",
     "notes_doc": null
+  },
+  {
+    "id": "007",
+    "topic": "General SQL commands",
+    "status": "OPEN",
+    "notes_doc": null
   }
 ]

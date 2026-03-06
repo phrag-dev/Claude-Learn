@@ -32,7 +32,7 @@
                 <button id="open-settings" class="sidebar-settings-btn" title="Sync Settings">Settings</button>
                 <button id="open-logs" class="sidebar-settings-btn" title="App Log (Ctrl+Shift+L)">Logs</button>
             </div>
-            <span class="last-updated">Updated: 2026-03-06 10:30 UTC</span>
+            <span class="last-updated">Updated: 2026-03-06 10:37 UTC</span>
         </div>
     </nav>
 
@@ -46,7 +46,7 @@
     <div class="card summary-card">
         <div class="card-label">Learning Items</div>
         <div class="card-counts">
-            <span class="count open">4 Open</span>
+            <span class="count open">5 Open</span>
             <span class="count learning">1 Learning</span>
             <span class="count closed">1 Closed</span>
         </div>
@@ -127,6 +127,24 @@
                     <option value="CLOSED">Closed</option>
                 </select>
                 <select class="item-skill-select" data-item-id="006" title="Link skill">
+                    <option value="">No skill</option>
+                    <option value="repo-safety">repo-safety</option>
+                    <option value="secrets">secrets</option>
+                </select>
+            </div>
+        </div>
+        <div class="item-row-managed" data-item-id="007" data-item-status="open" data-orig-status="OPEN">
+            <a href="item/007.html" class="item-row-link">
+                <span class="item-id">#007</span>
+                <span class="item-topic">General SQL commands</span>
+            </a>
+            <div class="item-row-controls">
+                <select class="item-status-select" data-item-id="007" title="Change status">
+                    <option value="OPEN" selected>Open</option>
+                    <option value="LEARNING">Learning</option>
+                    <option value="CLOSED">Closed</option>
+                </select>
+                <select class="item-skill-select" data-item-id="007" title="Link skill">
                     <option value="">No skill</option>
                     <option value="repo-safety">repo-safety</option>
                     <option value="secrets">secrets</option>
@@ -335,6 +353,7 @@
             <option value="004">004 — Python</option>
             <option value="005">005 — Windows Task Scheduler</option>
             <option value="006">006 — DEVOPS SQL General Required knowledge</option>
+            <option value="007">007 — General SQL commands</option>
         </select>
         <select id="capture-type" class="capture-select capture-type">
             <option value="thought">Thought</option>
