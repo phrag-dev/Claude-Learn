@@ -12,5 +12,6 @@
 | 004 | Python | OPEN | Notes/topics/004_notes.md |
 | 005 | Windows Task Scheduler | OPEN | Notes/topics/005_task_scheduler.md |
 
+| 006 | DEVOPS SQL General Required knowledge | OPEN | - |
 ---
 *Last updated: 2026-03-06*
