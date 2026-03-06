@@ -3,7 +3,8 @@
  *
  * Reads notes from localStorage for the current item,
  * renders them into sections, handles note filtering,
- * context-aware capture, and AI lookup buttons.
+ * context-aware capture, AI lookup buttons, and
+ * Capture Response modal with resolution tracking.
  */
 
 (function () {
@@ -18,22 +19,22 @@
     };
 
     function getItemId() {
-        // Extract from URL: item/002.html -> 002
         var match = window.location.pathname.match(/item\/(\d+)\.html/);
         return match ? match[1] : null;
     }
 
-    function renderNoteHTML(note) {
+    function renderNoteHTML(note, options) {
+        options = options || {};
         var icon = TYPE_ICONS[note.type] || "";
         var date = new Date(note.timestamp);
         var dateStr = date.toLocaleDateString() + " " + date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
         var syncClass = note.synced ? "synced" : "unsynced";
+        var resolvedClass = note.resolved ? " resolved" : "";
 
-        var html = '<div class="note-entry ' + syncClass + '" data-note-type="' + note.type + '">';
+        var html = '<div class="note-entry ' + syncClass + resolvedClass + '" data-note-type="' + note.type + '" data-note-id="' + (note.id || "") + '">';
         html += '<span class="note-icon">' + icon + '</span>';
         html += '<span class="note-content">';
 
-        // Auto-link URLs in any note type
         var urlPattern = /(https?:\/\/[^\s<]+)/g;
         var content = note.content.replace(/&/g, '&amp;').replace(/</g, '&lt;');
         content = content.replace(urlPattern, '<a href="$1" target="_blank" rel="noopener">$1</a>');
@@ -42,6 +43,9 @@
         html += '</span>';
         html += '<span class="note-meta">';
         html += '<span class="note-date">' + dateStr + '</span>';
+        if (note.resolved) {
+            html += '<span class="note-resolved-badge" title="Resolved">Resolved</span>';
+        }
         html += '<span class="note-sync-dot" title="' + (note.synced ? "Synced" : "Pending sync") + '"></span>';
         html += '</span>';
         html += '</div>';
@@ -54,39 +58,60 @@
         var notes = Capture.getNotesForItem(itemId);
         var notesContainer = document.getElementById("item-notes");
         var questionsContainer = document.getElementById("item-questions");
+        var resolvedContainer = document.getElementById("item-resolved");
         var noteCount = document.getElementById("meta-note-count");
         var questionCount = document.getElementById("meta-question-count");
 
         if (noteCount) noteCount.textContent = notes.length;
 
-        // Separate questions and answers
-        var questions = notes.filter(function (n) { return n.type === "question"; });
-        var answers = notes.filter(function (n) { return n.type === "answer"; });
-        if (questionCount) questionCount.textContent = questions.length;
+        // Separate by type and resolution status
+        var openQuestions = notes.filter(function (n) { return n.type === "question" && !n.resolved; });
+        var openThoughts = notes.filter(function (n) { return n.type === "thought" && !n.resolved; });
+        var resolvedNotes = notes.filter(function (n) { return n.resolved; });
+        var allQuestions = notes.filter(function (n) { return n.type === "question"; });
+        if (questionCount) questionCount.textContent = allQuestions.length;
 
-        // Render open questions (questions without a following answer)
+        // Open questions with AI action buttons
         if (questionsContainer) {
-            var unanswered = questions; // simplified: show all questions in the questions section
-            if (unanswered.length === 0) {
-                questionsContainer.innerHTML = '<p class="text-muted">No questions captured yet.</p>';
+            var openItems = notes.filter(function (n) {
+                return (n.type === "question" || n.type === "thought") && !n.resolved;
+            });
+            if (openItems.length === 0) {
+                questionsContainer.innerHTML = '<p class="text-muted">No open questions or thoughts.</p>';
             } else {
                 var qhtml = "";
-                unanswered.forEach(function (q) {
+                openItems.forEach(function (q) {
                     qhtml += '<div class="question-card">';
                     qhtml += renderNoteHTML(q);
-                    var escaped = q.content.replace(/"/g, '&quot;');
-                    qhtml += '<div class="question-actions">';
-                    qhtml += '<button class="btn btn-sm btn-action ask-ai-btn" data-question="' + escaped + '" data-provider="claude">Ask Claude</button>';
-                    qhtml += '<button class="btn btn-sm btn-action ask-ai-btn" data-question="' + escaped + '" data-provider="chatgpt">Ask ChatGPT</button>';
-                    qhtml += '<button class="btn btn-sm btn-action ask-ai-btn" data-question="' + escaped + '" data-provider="copilot">Ask Copilot</button>';
-                    qhtml += '<button class="btn btn-sm btn-action ask-ai-btn" data-question="' + escaped + '" data-provider="web">Search Web</button>';
-                    qhtml += '</div></div>';
+                    if (q.type === "question") {
+                        var escaped = q.content.replace(/"/g, '&quot;');
+                        qhtml += '<div class="question-actions">';
+                        qhtml += '<button class="btn btn-sm btn-action ask-ai-btn" data-question="' + escaped + '" data-provider="claude">Ask Claude</button>';
+                        qhtml += '<button class="btn btn-sm btn-action ask-ai-btn" data-question="' + escaped + '" data-provider="chatgpt">Ask ChatGPT</button>';
+                        qhtml += '<button class="btn btn-sm btn-action ask-ai-btn" data-question="' + escaped + '" data-provider="copilot">Ask Copilot</button>';
+                        qhtml += '<button class="btn btn-sm btn-action ask-ai-btn" data-question="' + escaped + '" data-provider="web">Search Web</button>';
+                        qhtml += '</div>';
+                    }
+                    qhtml += '</div>';
                 });
                 questionsContainer.innerHTML = qhtml;
             }
         }
 
-        // Render all notes
+        // Resolved section
+        if (resolvedContainer) {
+            if (resolvedNotes.length === 0) {
+                resolvedContainer.innerHTML = '<p class="text-muted">No resolved items yet.</p>';
+                resolvedContainer.parentElement.classList.add("hidden");
+            } else {
+                resolvedContainer.parentElement.classList.remove("hidden");
+                var rhtml = "";
+                resolvedNotes.forEach(function (n) { rhtml += renderNoteHTML(n); });
+                resolvedContainer.innerHTML = rhtml;
+            }
+        }
+
+        // All notes (full timeline)
         if (notesContainer) {
             if (notes.length === 0) {
                 notesContainer.innerHTML = '<p class="text-muted">No notes captured yet. Use the bar below to start.</p>';
@@ -96,12 +121,90 @@
                 notesContainer.innerHTML = html;
             }
         }
+
+        // Update capture response button state
+        var captureBtn = document.getElementById("capture-response-btn");
+        if (captureBtn) {
+            var hasOpen = notes.some(function (n) {
+                return (n.type === "question" || n.type === "thought") && !n.resolved;
+            });
+            captureBtn.disabled = !hasOpen;
+        }
+    }
+
+    function setupCaptureResponseModal(itemId) {
+        var modal = document.getElementById("capture-response-modal");
+        var openBtn = document.getElementById("capture-response-btn");
+        var closeBtn = modal ? modal.querySelector("[data-dismiss='modal']") : null;
+        var saveBtn = document.getElementById("capture-response-save");
+        var textarea = document.getElementById("capture-response-text");
+        var checklistEl = document.getElementById("capture-response-checklist");
+
+        if (!modal || !openBtn) return;
+
+        function openModal() {
+            if (typeof Capture === "undefined") return;
+            var notes = Capture.getNotesForItem(itemId);
+            var openItems = notes.filter(function (n) {
+                return (n.type === "question" || n.type === "thought") && !n.resolved;
+            });
+
+            if (openItems.length === 0) return;
+
+            // Build checklist
+            var clhtml = "";
+            openItems.forEach(function (n) {
+                var icon = TYPE_ICONS[n.type] || "";
+                var escaped = n.content.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+                clhtml += '<label class="checklist-item">';
+                clhtml += '<input type="checkbox" value="' + n.id + '" checked>';
+                clhtml += '<span class="checklist-icon">' + icon + '</span>';
+                clhtml += '<span class="checklist-text">' + escaped + '</span>';
+                clhtml += '</label>';
+            });
+            checklistEl.innerHTML = clhtml;
+            textarea.value = "";
+            modal.classList.remove("hidden");
+            textarea.focus();
+        }
+
+        function closeModal() {
+            modal.classList.add("hidden");
+        }
+
+        openBtn.addEventListener("click", openModal);
+        if (closeBtn) closeBtn.addEventListener("click", closeModal);
+        modal.addEventListener("click", function (e) {
+            if (e.target === modal) closeModal();
+        });
+
+        saveBtn.addEventListener("click", function () {
+            var responseText = textarea.value.trim();
+            if (!responseText) return;
+
+            // Get checked note IDs to resolve
+            var checkedIds = [];
+            checklistEl.querySelectorAll("input[type=checkbox]:checked").forEach(function (cb) {
+                checkedIds.push(cb.value);
+            });
+
+            // Save the response as an answer note
+            var answerNote = Capture.addNote(itemId, "answer", responseText);
+
+            // Resolve the checked items
+            if (answerNote && checkedIds.length > 0) {
+                Capture.resolveNotes(checkedIds, answerNote.id);
+            }
+
+            closeModal();
+            renderNotes(itemId);
+            Capture.updateSyncIndicator();
+        });
     }
 
     function setupNoteFilters() {
         document.querySelectorAll("[data-note-filter]").forEach(function (btn) {
             btn.addEventListener("click", function () {
-                // Update active state
                 btn.parentElement.querySelectorAll(".filter-btn").forEach(function (b) {
                     b.classList.remove("active");
                 });
@@ -121,7 +224,6 @@
     }
 
     function setupContextCapture(itemId) {
-        // Auto-select this item in the capture bar
         var select = document.getElementById("capture-item");
         if (select) {
             select.value = itemId;
@@ -129,7 +231,6 @@
     }
 
     function getTopicForItem(itemId) {
-        // Read from the page title
         var h2 = document.querySelector(".page-header h2");
         return h2 ? h2.textContent.replace("#" + itemId, "").trim() : "this topic";
     }
@@ -138,6 +239,7 @@
         var topic = getTopicForItem(itemId);
         var notes = (typeof Capture !== "undefined") ? Capture.getNotesForItem(itemId) : [];
 
+        // Only include unresolved items in synthesis
         var questions = [];
         var thoughts = [];
         var links = [];
@@ -145,6 +247,7 @@
         var updates = [];
 
         notes.forEach(function (n) {
+            if (n.resolved) return;
             switch (n.type) {
                 case "question": questions.push(n.content); break;
                 case "thought": thoughts.push(n.content); break;
@@ -154,8 +257,9 @@
             }
         });
 
-        if (notes.length === 0) {
-            return "I'm learning about " + topic + ". I haven't captured any notes yet. Please help me get started — what are the key concepts I should understand first? Respond in clean markdown without emoji, using headings, bullet points, and code blocks. Structure it so I can copy directly into a .md file.";
+        var unresolvedCount = questions.length + thoughts.length + links.length + answers.length + updates.length;
+        if (unresolvedCount === 0) {
+            return "I'm learning about " + topic + ". All my current questions have been resolved. Please help me go deeper — what are the next concepts I should explore? Respond in clean markdown without emoji, using headings, bullet points, and code blocks. Structure it so I can copy directly into a .md file.";
         }
 
         var prompt = "I am learning about: " + topic + "\n\n";
@@ -210,7 +314,6 @@
             web: function (q) { return "https://www.google.com/search?q=" + encodeURIComponent(q); }
         };
 
-        // Sidebar synthesis buttons
         var synthProviders = { "synth-claude-btn": "claude", "synth-chatgpt-btn": "chatgpt", "synth-copilot-btn": "copilot" };
         Object.keys(synthProviders).forEach(function (btnId) {
             var btn = document.getElementById(btnId);
@@ -220,7 +323,6 @@
             });
         });
 
-        // Per-question "Ask AI" buttons — send the actual question
         document.addEventListener("click", function (e) {
             var btn = e.target.closest(".ask-ai-btn");
             if (!btn) return;
@@ -230,6 +332,19 @@
                 window.open(providers[provider](question), "_blank");
             }
         });
+    }
+
+    function setupResolvedToggle() {
+        var toggle = document.getElementById("resolved-toggle");
+        if (toggle) {
+            toggle.addEventListener("click", function () {
+                var section = document.getElementById("resolved-section");
+                if (section) {
+                    section.classList.toggle("collapsed");
+                    toggle.textContent = section.classList.contains("collapsed") ? "Show" : "Hide";
+                }
+            });
+        }
     }
 
     function refresh() {
@@ -245,8 +360,9 @@
         setupNoteFilters();
         setupContextCapture(itemId);
         setupAIButtons(itemId);
+        setupCaptureResponseModal(itemId);
+        setupResolvedToggle();
     });
 
-    // Expose refresh for capture.js to call after saving
     window.ItemPage = { refresh: refresh };
 })();

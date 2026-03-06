@@ -317,10 +317,24 @@ var Capture = (function () {
     // Run on DOM ready
     document.addEventListener("DOMContentLoaded", init);
 
+    function resolveNotes(noteIds, answerNoteId) {
+        var notes = getNotes();
+        notes.forEach(function (n) {
+            if (noteIds.indexOf(n.id) !== -1) {
+                n.resolved = true;
+                n.resolved_by = answerNoteId;
+                n.resolved_at = new Date().toISOString();
+            }
+        });
+        saveNotes(notes);
+    }
+
     return {
         getNotes: getNotes,
         getNotesForItem: getNotesForItem,
         getUnsyncedNotes: getUnsyncedNotes,
+        addNote: addNote,
+        resolveNotes: resolveNotes,
         markSynced: markSynced,
         renderNoteHTML: renderNoteHTML,
         updateSyncIndicator: updateSyncIndicator

@@ -28,7 +28,7 @@
             </button>
         </div>
         <div class="sidebar-footer">
-            <span class="last-updated">Updated: 2026-03-06 06:39 UTC</span>
+            <span class="last-updated">Updated: 2026-03-06 06:45 UTC</span>
         </div>
     </nav>
 
@@ -44,11 +44,25 @@
 <div class="item-layout">
     <!-- Main column -->
     <div class="item-main">
-        <!-- Questions needing answers -->
+        <!-- Open questions and thoughts -->
         <div class="item-section" id="questions-section">
-            <h3>Open Questions</h3>
+            <div class="section-header-row">
+                <h3>Open Questions &amp; Thoughts</h3>
+                <button class="btn btn-sm btn-action" id="capture-response-btn" title="Paste an AI response and resolve open items">Capture Response</button>
+            </div>
             <div id="item-questions">
-                <p class="text-muted">No questions captured yet.</p>
+                <p class="text-muted">No open questions or thoughts.</p>
+            </div>
+        </div>
+
+        <!-- Resolved items (collapsible) -->
+        <div class="item-section hidden" id="resolved-section">
+            <div class="section-header-row">
+                <h3>Resolved</h3>
+                <button class="btn btn-sm btn-text" id="resolved-toggle">Hide</button>
+            </div>
+            <div id="item-resolved">
+                <p class="text-muted">No resolved items yet.</p>
             </div>
         </div>
 
@@ -99,7 +113,7 @@
 
         <div class="item-meta-card">
             <h4>Topic Synthesis</h4>
-            <p class="synthesis-desc">Bundle all questions &amp; notes into a single prompt. The AI will find synergies, then present a synopsis for confirmation before answering.</p>
+            <p class="synthesis-desc">Bundle all open questions &amp; notes into a single prompt. The AI will find synergies, then present a synopsis for confirmation before answering.</p>
             <div class="quick-actions">
                 <button class="btn btn-action" id="synth-claude-btn" title="Synthesise all captured knowledge via Claude">Synthesise with Claude</button>
                 <button class="btn btn-action" id="synth-chatgpt-btn" title="Synthesise all captured knowledge via ChatGPT">Synthesise with ChatGPT</button>
@@ -107,6 +121,28 @@
             </div>
         </div>
     </aside>
+</div>
+
+<!-- Capture Response Modal -->
+<div class="modal-overlay hidden" id="capture-response-modal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-header">
+            <h3>Capture Response</h3>
+            <button class="modal-close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+            <p class="modal-instruction">Paste the AI response below, then check which items this resolves.</p>
+            <textarea id="capture-response-text" class="capture-textarea" rows="10" placeholder="Paste the AI's markdown response here..."></textarea>
+            <div class="checklist-section">
+                <h4>This response resolves:</h4>
+                <div id="capture-response-checklist"></div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-sm btn-text" data-dismiss="modal">Cancel</button>
+            <button class="btn btn-sm btn-action" id="capture-response-save">Save &amp; Resolve</button>
+        </div>
+    </div>
 </div>
     </main>
 

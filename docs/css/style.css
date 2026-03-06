@@ -965,6 +965,136 @@ a.kanban-card-link:hover {
     flex-wrap: wrap;
 }
 
+/* Section header with inline button */
+.section-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+.section-header-row h3 { margin-bottom: 0; }
+
+/* Resolved note styling */
+.note-entry.resolved { opacity: 0.6; }
+.note-entry.resolved .note-content { text-decoration: line-through; }
+.note-resolved-badge {
+    font-size: 0.6rem;
+    background: rgba(63, 185, 80, 0.15);
+    color: var(--green);
+    padding: 0.1rem 0.35rem;
+    border-radius: 4px;
+    white-space: nowrap;
+}
+
+/* Resolved section collapse */
+#resolved-section.collapsed #item-resolved { display: none; }
+#resolved-section.hidden { display: none; }
+
+/* Text-only button */
+.btn-text {
+    background: none;
+    border: none;
+    color: var(--accent);
+    cursor: pointer;
+    font-size: 0.75rem;
+    padding: 0.2rem 0.4rem;
+}
+.btn-text:hover { text-decoration: underline; }
+
+/* Capture Response Modal */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+}
+.modal-overlay.hidden { display: none; }
+
+.modal-dialog {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    width: 90%;
+    max-width: 600px;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+}
+.modal-lg { max-width: 700px; }
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--border);
+}
+.modal-header h3 { margin: 0; font-size: 1rem; }
+
+.modal-close {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 1.4rem;
+    cursor: pointer;
+    line-height: 1;
+}
+.modal-close:hover { color: var(--text-primary); }
+
+.modal-body {
+    padding: 1.25rem;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    border-top: 1px solid var(--border);
+}
+
+.modal-instruction {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin: 0 0 0.75rem 0;
+}
+
+.capture-textarea {
+    width: 100%;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text-primary);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    padding: 0.75rem;
+    resize: vertical;
+    min-height: 150px;
+}
+.capture-textarea:focus { outline: none; border-color: var(--accent); }
+
+.checklist-section { margin-top: 1rem; }
+.checklist-section h4 { font-size: 0.85rem; margin-bottom: 0.5rem; }
+
+.checklist-item {
+    display: flex;
+    gap: 0.5rem;
+    align-items: flex-start;
+    padding: 0.4rem 0.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.8rem;
+}
+.checklist-item:hover { background: var(--bg-card); }
+.checklist-item input[type="checkbox"] { margin-top: 0.15rem; flex-shrink: 0; }
+.checklist-icon { flex-shrink: 0; }
+.checklist-text { flex: 1; color: var(--text-primary); }
+
 /* === Responsive === */
 @media (max-width: 768px) {
     .sidebar {
