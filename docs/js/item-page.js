@@ -74,11 +74,12 @@
                 unanswered.forEach(function (q) {
                     qhtml += '<div class="question-card">';
                     qhtml += renderNoteHTML(q);
+                    var escaped = q.content.replace(/"/g, '&quot;');
                     qhtml += '<div class="question-actions">';
-                    qhtml += '<button class="btn btn-sm btn-action ask-ai-btn" data-question="' +
-                        q.content.replace(/"/g, '&quot;') + '" data-provider="claude">Ask Claude</button>';
-                    qhtml += '<button class="btn btn-sm btn-action ask-ai-btn" data-question="' +
-                        q.content.replace(/"/g, '&quot;') + '" data-provider="chatgpt">Ask ChatGPT</button>';
+                    qhtml += '<button class="btn btn-sm btn-action ask-ai-btn" data-question="' + escaped + '" data-provider="claude">Ask Claude</button>';
+                    qhtml += '<button class="btn btn-sm btn-action ask-ai-btn" data-question="' + escaped + '" data-provider="chatgpt">Ask ChatGPT</button>';
+                    qhtml += '<button class="btn btn-sm btn-action ask-ai-btn" data-question="' + escaped + '" data-provider="copilot">Ask Copilot</button>';
+                    qhtml += '<button class="btn btn-sm btn-action ask-ai-btn" data-question="' + escaped + '" data-provider="web">Search Web</button>';
                     qhtml += '</div></div>';
                 });
                 questionsContainer.innerHTML = qhtml;
@@ -162,13 +163,14 @@
             window.open(providers.web(topic + " tutorial guide"), "_blank");
         });
 
-        // Per-question "Ask AI" buttons
+        // Per-question "Ask AI" buttons — send the actual question
         document.addEventListener("click", function (e) {
-            if (!e.target.classList.contains("ask-ai-btn")) return;
-            var question = e.target.getAttribute("data-question");
-            var provider = e.target.getAttribute("data-provider");
+            var btn = e.target.closest(".ask-ai-btn");
+            if (!btn) return;
+            var question = btn.getAttribute("data-question");
+            var provider = btn.getAttribute("data-provider");
             if (question && providers[provider]) {
-                window.open(providers[provider](question + " (in the context of " + topic + ")"), "_blank");
+                window.open(providers[provider](question), "_blank");
             }
         });
     }

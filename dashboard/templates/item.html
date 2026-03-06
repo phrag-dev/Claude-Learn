@@ -38,23 +38,7 @@
             </div>
         </div>
 
-        <!-- Topic files related to this item -->
         {% if item_topics %}
-        <div class="item-section">
-            <h3>Topic Files</h3>
-            <div class="topic-cards">
-                {% for topic in item_topics %}
-                <div class="topic-card">
-                    <div class="topic-card-title">{{ topic.title }}</div>
-                    <div class="topic-card-file"><code>{{ topic.filename }}</code></div>
-                    <div class="topic-card-summary text-muted">{{ topic.summary }}</div>
-                    {% if topic.github_url %}
-                    <a href="{{ topic.github_url }}" target="_blank" rel="noopener" class="topic-card-link">View on GitHub &rarr;</a>
-                    {% endif %}
-                </div>
-                {% endfor %}
-            </div>
-        </div>
         {% endif %}
     </div>
 
@@ -78,13 +62,30 @@
             </dl>
         </div>
 
+        {% if item_topics %}
         <div class="item-meta-card">
-            <h4>Quick Actions</h4>
+            <h4>Docs</h4>
+            <ul class="doc-list">
+                {% for topic in item_topics %}
+                <li>
+                    {% if topic.github_url %}
+                    <a href="{{ topic.github_url }}" target="_blank" rel="noopener">{{ topic.title }}</a>
+                    {% else %}
+                    {{ topic.title }}
+                    {% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+
+        <div class="item-meta-card">
+            <h4>Explore Topic</h4>
             <div class="quick-actions">
-                <button class="btn btn-action" id="ask-claude-btn" title="Open Claude with a question about this topic">Ask Claude</button>
-                <button class="btn btn-action" id="ask-chatgpt-btn" title="Open ChatGPT with a question about this topic">Ask ChatGPT</button>
-                <button class="btn btn-action" id="ask-copilot-btn" title="Open Copilot with a question about this topic">Ask Copilot</button>
-                <button class="btn btn-action" id="search-web-btn" title="Search the web for this topic">Web Search</button>
+                <button class="btn btn-action" id="ask-claude-btn" title="Start a Claude conversation about this topic">Learn with Claude</button>
+                <button class="btn btn-action" id="ask-chatgpt-btn" title="Start a ChatGPT conversation about this topic">Learn with ChatGPT</button>
+                <button class="btn btn-action" id="ask-copilot-btn" title="Start a Copilot conversation about this topic">Learn with Copilot</button>
+                <button class="btn btn-action" id="search-web-btn" title="Search the web for tutorials and guides">Search Web</button>
             </div>
         </div>
     </aside>

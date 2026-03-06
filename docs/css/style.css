@@ -940,6 +940,22 @@ a.kanban-card-link:hover {
     font-size: 0.75rem;
 }
 
+/* Doc list in sidebar */
+.doc-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.doc-list li {
+    font-size: 0.8rem;
+}
+
+.doc-list li a {
+    color: var(--accent);
+}
+
 /* Note filters within item page */
 .note-filters {
     display: flex;
