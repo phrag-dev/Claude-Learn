@@ -155,7 +155,7 @@
         });
 
         if (notes.length === 0) {
-            return "I'm learning about " + topic + ". I haven't captured any notes yet. Please help me get started — what are the key concepts I should understand first?";
+            return "I'm learning about " + topic + ". I haven't captured any notes yet. Please help me get started — what are the key concepts I should understand first? Respond in clean markdown without emoji, using headings, bullet points, and code blocks. Structure it so I can copy directly into a .md file.";
         }
 
         var prompt = "I am learning about: " + topic + "\n\n";
@@ -166,6 +166,12 @@
         prompt += "2. Identify synergies, connections, and common threads across them\n";
         prompt += "3. Present a brief synopsis of the key themes you've identified\n";
         prompt += "4. Wait for my confirmation before providing detailed answers\n\n";
+        prompt += "OUTPUT FORMAT RULES:\n";
+        prompt += "- Respond in clean markdown only\n";
+        prompt += "- Use headings (##, ###), bullet points, numbered lists, and code blocks where appropriate\n";
+        prompt += "- Do NOT use emoji anywhere in your response\n";
+        prompt += "- Keep it structured so I can copy the response directly into a .md knowledge file\n";
+        prompt += "- Use --- horizontal rules to separate major sections\n\n";
 
         if (questions.length > 0) {
             prompt += "--- QUESTIONS ---\n";
