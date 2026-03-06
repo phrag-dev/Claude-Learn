@@ -4,63 +4,55 @@
 
 {% block content %}
 <div class="page-header">
-    <h2>Learning Tracker</h2>
-    <p class="page-description">All learning items by status. Managed in LEARNING_TRACKER.md.</p>
+    <div class="section-header-row">
+        <h2>Learning Tracker</h2>
+        <button class="btn btn-sm btn-action" id="add-topic-btn-learn">+ Add Topic</button>
+    </div>
 </div>
 
 <div class="search-bar">
     <input type="text" id="learning-search" class="search-input" placeholder="Filter items..." autocomplete="off">
 </div>
 
-<div class="kanban">
-    {% set statuses = ["OPEN", "LEARNING", "CLOSED"] %}
-    {% for status in statuses %}
-    {% set status_items = learning | selectattr("status", "equalto", status) | list %}
-    <div class="kanban-column">
-        <div class="kanban-column-header">
-            <span class="badge badge-{{ status | lower }}">{{ status }}</span>
-            <span class="column-count">{{ status_items | length }}</span>
-        </div>
-        {% if status_items %}
-            {% for item in status_items %}
-            <a href="{{ base_path }}item/{{ item.id }}.html" class="kanban-card kanban-card-link">
-                <div class="card-id">#{{ item.id }}</div>
-                <div class="card-topic">{{ item.topic }}</div>
-                {% if item.notes_doc %}
-                <div class="card-doc">
-                    <span class="doc-link" title="{{ item.notes_doc }}">{{ item.notes_doc | replace("Notes/topics/", "") }}</span>
-                </div>
-                {% endif %}
-            </a>
-            {% endfor %}
-        {% else %}
-            <div class="kanban-empty">No items</div>
-        {% endif %}
+<div class="learning-list">
+    <div class="learning-list-header">
+        <span class="ll-id">ID</span>
+        <span class="ll-topic">Topic</span>
+        <span class="ll-status">Status</span>
     </div>
+    {% for item in learning | sort(attribute='topic') %}
+    <a href="{{ base_path }}item/{{ item.id }}.html" class="learning-list-row" data-status="{{ item.status | lower }}">
+        <span class="ll-id">#{{ item.id }}</span>
+        <span class="ll-topic">{{ item.topic }}</span>
+        <span class="badge badge-{{ item.status | lower }}">{{ item.status }}</span>
+    </a>
     {% endfor %}
 </div>
 
 {% if topics %}
-<div class="recent-section" style="margin-top: 2rem;">
-    <h3>Topic Files</h3>
-    <table class="data-table">
-        <thead>
-            <tr>
-                <th>File</th>
-                <th>Title</th>
-                <th>Summary</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for topic in topics %}
-            <tr>
-                <td><code>{{ topic.filename }}</code></td>
-                <td>{{ topic.title }}</td>
-                <td class="text-muted">{{ topic.summary }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+<div class="recent-section" style="margin-top: 1.5rem;">
+    <div class="section-header-row">
+        <h3>Topic Files</h3>
+        <button class="btn btn-sm btn-text" id="topics-toggle">Show All</button>
+    </div>
+    <div id="topics-list" class="hidden">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Summary</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for topic in topics | sort(attribute='title') %}
+                <tr>
+                    <td>{{ topic.title }}</td>
+                    <td class="text-muted">{{ topic.summary }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>
 {% endif %}
 {% endblock %}

@@ -45,17 +45,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 });
         });
 
-    // Learning page search filter
     var searchInput = document.getElementById("learning-search");
-    if (searchInput) {
-        searchInput.addEventListener("input", function () {
-            var query = searchInput.value.toLowerCase();
-            document.querySelectorAll(".kanban-card, .kanban-card-link").forEach(function (card) {
-                var text = card.textContent.toLowerCase();
-                card.style.display = (query === "" || text.indexOf(query) !== -1) ? "" : "none";
-            });
-        });
-    }
 
     // Sidebar commander trigger button
     var triggerBtn = document.getElementById("open-commander");
@@ -63,6 +53,44 @@ document.addEventListener("DOMContentLoaded", function () {
         triggerBtn.addEventListener("click", function () {
             Commander.open();
         });
+    }
+
+    // === Topic Files toggle ===
+    var topicsToggle = document.getElementById("topics-toggle");
+    var topicsList = document.getElementById("topics-list");
+    if (topicsToggle && topicsList) {
+        topicsToggle.addEventListener("click", function () {
+            var isHidden = topicsList.classList.toggle("hidden");
+            topicsToggle.textContent = isHidden ? "Show All" : "Hide";
+        });
+    }
+
+    // === Learning page search (updated for new list layout) ===
+    if (searchInput) {
+        searchInput.addEventListener("input", function () {
+            var query = searchInput.value.toLowerCase();
+            document.querySelectorAll(".learning-list-row").forEach(function (row) {
+                var text = row.textContent.toLowerCase();
+                row.style.display = (query === "" || text.indexOf(query) !== -1) ? "" : "none";
+            });
+        });
+    }
+
+    // === Learning page Add Topic button (reuse home modal if present, else open home) ===
+    var addBtnLearn = document.getElementById("add-topic-btn-learn");
+    if (addBtnLearn) {
+        var addModal = document.getElementById("add-topic-modal");
+        if (addModal) {
+            addBtnLearn.addEventListener("click", function () {
+                addModal.classList.remove("hidden");
+                var nameInput = document.getElementById("new-topic-name");
+                if (nameInput) { nameInput.value = ""; nameInput.focus(); }
+            });
+        } else {
+            addBtnLearn.addEventListener("click", function () {
+                window.location.href = "index.html";
+            });
+        }
     }
 
     // === Recent Captures toggle ===

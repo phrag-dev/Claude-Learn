@@ -274,7 +274,57 @@ a:hover { text-decoration: underline; }
 }
 
 /* Collapsible sections */
-.collapsible-content.hidden { display: none; }
+.hidden { display: none !important; }
+
+/* Learning list (compact table view) */
+.learning-list {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.learning-list-header {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 0.75rem;
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border);
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.learning-list-row {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1px solid var(--border);
+    text-decoration: none;
+    color: var(--text-primary);
+    transition: background 0.12s;
+}
+.learning-list-row:last-child { border-bottom: none; }
+.learning-list-row:hover { background: var(--bg-hover); }
+
+.ll-id {
+    width: 3rem;
+    flex-shrink: 0;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-family: monospace;
+}
+
+.ll-topic {
+    flex: 1;
+    font-size: 0.85rem;
+}
+
+.ll-status {
+    width: 5.5rem;
+    flex-shrink: 0;
+    text-align: right;
+}
 
 /* === Tables === */
 .data-table {
@@ -545,7 +595,7 @@ a:hover { text-decoration: underline; }
     z-index: 100;
 }
 
-.modal.hidden { display: none; }
+/* .modal.hidden covered by generic .hidden */
 
 .modal-content {
     background: var(--bg-secondary);
@@ -577,7 +627,7 @@ a:hover { text-decoration: underline; }
 .modal-close:hover { color: var(--text-primary); }
 
 .modal-body { padding: 1.25rem; }
-.modal-body.hidden { display: none; }
+/* .modal-body.hidden covered by generic .hidden */
 
 .form-group {
     margin-bottom: 0.75rem;
@@ -698,7 +748,7 @@ a:hover { text-decoration: underline; }
     padding-top: 15vh;
 }
 
-.commander-overlay.hidden { display: none; }
+/* .commander-overlay.hidden covered by generic .hidden */
 
 .commander-dialog {
     background: var(--bg-secondary);
@@ -1041,7 +1091,7 @@ a.kanban-card-link:hover {
 
 /* Resolved section collapse */
 #resolved-section.collapsed #item-resolved { display: none; }
-#resolved-section.hidden { display: none; }
+/* #resolved-section.hidden covered by generic .hidden */
 
 /* Text-only button */
 .btn-text {
@@ -1064,7 +1114,7 @@ a.kanban-card-link:hover {
     justify-content: center;
     z-index: 200;
 }
-.modal-overlay.hidden { display: none; }
+/* .modal-overlay.hidden covered by generic .hidden */
 
 .modal-dialog {
     background: var(--bg-secondary);

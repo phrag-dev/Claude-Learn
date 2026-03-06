@@ -28,127 +28,104 @@
             </button>
         </div>
         <div class="sidebar-footer">
-            <span class="last-updated">Updated: 2026-03-06 07:13 UTC</span>
+            <span class="last-updated">Updated: 2026-03-06 07:34 UTC</span>
         </div>
     </nav>
 
     <main class="content">
 <div class="page-header">
-    <h2>Learning Tracker</h2>
-    <p class="page-description">All learning items by status. Managed in LEARNING_TRACKER.md.</p>
+    <div class="section-header-row">
+        <h2>Learning Tracker</h2>
+        <button class="btn btn-sm btn-action" id="add-topic-btn-learn">+ Add Topic</button>
+    </div>
 </div>
 
 <div class="search-bar">
     <input type="text" id="learning-search" class="search-input" placeholder="Filter items..." autocomplete="off">
 </div>
 
-<div class="kanban">
-    <div class="kanban-column">
-        <div class="kanban-column-header">
-            <span class="badge badge-open">OPEN</span>
-            <span class="column-count">4</span>
-        </div>
-            <a href="item/002.html" class="kanban-card kanban-card-link">
-                <div class="card-id">#002</div>
-                <div class="card-topic">ArcGIS</div>
-                <div class="card-doc">
-                    <span class="doc-link" title="Notes/topics/002_arcgis.md">002_arcgis.md</span>
-                </div>
-            </a>
-            <a href="item/003.html" class="kanban-card kanban-card-link">
-                <div class="card-id">#003</div>
-                <div class="card-topic">Learning Dashboard (GitHub Pages)</div>
-                <div class="card-doc">
-                    <span class="doc-link" title="Notes/topics/plan_learning_dashboard.md">plan_learning_dashboard.md</span>
-                </div>
-            </a>
-            <a href="item/004.html" class="kanban-card kanban-card-link">
-                <div class="card-id">#004</div>
-                <div class="card-topic">Python</div>
-                <div class="card-doc">
-                    <span class="doc-link" title="Notes/topics/004_notes.md">004_notes.md</span>
-                </div>
-            </a>
-            <a href="item/005.html" class="kanban-card kanban-card-link">
-                <div class="card-id">#005</div>
-                <div class="card-topic">Windows Task Scheduler</div>
-                <div class="card-doc">
-                    <span class="doc-link" title="Notes/topics/005_task_scheduler.md">005_task_scheduler.md</span>
-                </div>
-            </a>
+<div class="learning-list">
+    <div class="learning-list-header">
+        <span class="ll-id">ID</span>
+        <span class="ll-topic">Topic</span>
+        <span class="ll-status">Status</span>
     </div>
-    <div class="kanban-column">
-        <div class="kanban-column-header">
-            <span class="badge badge-learning">LEARNING</span>
-            <span class="column-count">1</span>
-        </div>
-            <a href="item/001.html" class="kanban-card kanban-card-link">
-                <div class="card-id">#001</div>
-                <div class="card-topic">Skills v2 / Claude Code implementation</div>
-            </a>
-    </div>
-    <div class="kanban-column">
-        <div class="kanban-column-header">
-            <span class="badge badge-closed">CLOSED</span>
-            <span class="column-count">0</span>
-        </div>
-            <div class="kanban-empty">No items</div>
-    </div>
+    <a href="item/002.html" class="learning-list-row" data-status="open">
+        <span class="ll-id">#002</span>
+        <span class="ll-topic">ArcGIS</span>
+        <span class="badge badge-open">OPEN</span>
+    </a>
+    <a href="item/003.html" class="learning-list-row" data-status="open">
+        <span class="ll-id">#003</span>
+        <span class="ll-topic">Learning Dashboard (GitHub Pages)</span>
+        <span class="badge badge-open">OPEN</span>
+    </a>
+    <a href="item/004.html" class="learning-list-row" data-status="open">
+        <span class="ll-id">#004</span>
+        <span class="ll-topic">Python</span>
+        <span class="badge badge-open">OPEN</span>
+    </a>
+    <a href="item/001.html" class="learning-list-row" data-status="learning">
+        <span class="ll-id">#001</span>
+        <span class="ll-topic">Skills v2 / Claude Code implementation</span>
+        <span class="badge badge-learning">LEARNING</span>
+    </a>
+    <a href="item/005.html" class="learning-list-row" data-status="open">
+        <span class="ll-id">#005</span>
+        <span class="ll-topic">Windows Task Scheduler</span>
+        <span class="badge badge-open">OPEN</span>
+    </a>
 </div>
 
-<div class="recent-section" style="margin-top: 2rem;">
-    <h3>Topic Files</h3>
-    <table class="data-table">
-        <thead>
-            <tr>
-                <th>File</th>
-                <th>Title</th>
-                <th>Summary</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td><code>002_arcgis.md</code></td>
-                <td>ArcGIS — Learning Package</td>
-                <td class="text-muted">ArcGIS is Esri&#39;s suite of GIS (Geographic Information Systems) software for working with spatial data — maps, geographic analysis, and location-based decision making. The two main platforms are:</td>
-            </tr>
-            <tr>
-                <td><code>002_notes.md</code></td>
-                <td>Notes: ArcGIS (002)</td>
-                <td class="text-muted">❓ Question — 2026-03-06 03:10</td>
-            </tr>
-            <tr>
-                <td><code>004_notes.md</code></td>
-                <td>Notes: Python (004)</td>
-                <td class="text-muted">💭 Thought — 2026-03-06 03:57</td>
-            </tr>
-            <tr>
-                <td><code>005_task_scheduler.md</code></td>
-                <td>Windows Task Scheduler</td>
-                <td class="text-muted">Windows Task Scheduler (`taskschd.msc`) is a built-in Windows service that runs programs, scripts, or commands automatically based on triggers (time, event, logon, boot, idle, etc).</td>
-            </tr>
-            <tr>
-                <td><code>plan_dashboard_capture.md</code></td>
-                <td>Plan: Dashboard Capture System (Living Notes)</td>
-                <td class="text-muted">The dashboard is read-only — a display board. It needs to be a living tool that captures:</td>
-            </tr>
-            <tr>
-                <td><code>plan_learning_dashboard.md</code></td>
-                <td>Plan: Learning Dashboard (GitHub Pages)</td>
-                <td class="text-muted">A personal, interactive web dashboard that surfaces everything from Claude_Learn — learning items, skill inventory, repo safety audits, and workflow status — accessible from anywhere via GitHub Pages.</td>
-            </tr>
-            <tr>
-                <td><code>security_dashboard_sync.md</code></td>
-                <td>Security Analysis: Dashboard GitHub API Sync</td>
-                <td class="text-muted">A GitHub fine-grained Personal Access Token (PAT) that can write to ONE repository (Claude_Learn). This token lives in the user&#39;s browser and is used to commit captured notes directly to the repo.</td>
-            </tr>
-            <tr>
-                <td><code>workflow_gsd_integration.md</code></td>
-                <td>Workflow: Claude_Learn + GSD Integration</td>
-                <td class="text-muted">Claude_Learn is the brain. GSD Sandbox is the workshop. They stay separate.</td>
-            </tr>
-        </tbody>
-    </table>
+<div class="recent-section" style="margin-top: 1.5rem;">
+    <div class="section-header-row">
+        <h3>Topic Files</h3>
+        <button class="btn btn-sm btn-text" id="topics-toggle">Show All</button>
+    </div>
+    <div id="topics-list" class="hidden">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Summary</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>ArcGIS — Learning Package</td>
+                    <td class="text-muted">ArcGIS is Esri&#39;s suite of GIS (Geographic Information Systems) software for working with spatial data — maps, geographic analysis, and location-based decision making. The two main platforms are:</td>
+                </tr>
+                <tr>
+                    <td>Notes: ArcGIS (002)</td>
+                    <td class="text-muted">❓ Question — 2026-03-06 03:10</td>
+                </tr>
+                <tr>
+                    <td>Notes: Python (004)</td>
+                    <td class="text-muted">💭 Thought — 2026-03-06 03:57</td>
+                </tr>
+                <tr>
+                    <td>Plan: Dashboard Capture System (Living Notes)</td>
+                    <td class="text-muted">The dashboard is read-only — a display board. It needs to be a living tool that captures:</td>
+                </tr>
+                <tr>
+                    <td>Plan: Learning Dashboard (GitHub Pages)</td>
+                    <td class="text-muted">A personal, interactive web dashboard that surfaces everything from Claude_Learn — learning items, skill inventory, repo safety audits, and workflow status — accessible from anywhere via GitHub Pages.</td>
+                </tr>
+                <tr>
+                    <td>Security Analysis: Dashboard GitHub API Sync</td>
+                    <td class="text-muted">A GitHub fine-grained Personal Access Token (PAT) that can write to ONE repository (Claude_Learn). This token lives in the user&#39;s browser and is used to commit captured notes directly to the repo.</td>
+                </tr>
+                <tr>
+                    <td>Windows Task Scheduler</td>
+                    <td class="text-muted">Windows Task Scheduler (`taskschd.msc`) is a built-in Windows service that runs programs, scripts, or commands automatically based on triggers (time, event, logon, boot, idle, etc).</td>
+                </tr>
+                <tr>
+                    <td>Workflow: Claude_Learn + GSD Integration</td>
+                    <td class="text-muted">Claude_Learn is the brain. GSD Sandbox is the workshop. They stay separate.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
     </main>
 
@@ -209,8 +186,6 @@
         </select>
         <input type="text" id="capture-input" class="capture-input" placeholder="Capture a note..." autocomplete="off">
         <button id="capture-save" class="btn btn-capture">Save</button>
-        <button id="capture-settings" class="btn btn-icon" title="Sync settings">&#9881;</button>
-        <span id="sync-indicator" class="sync-indicator" title="Sync status"></span>
     </div>
 
     <script src="js/crypto.js"></script>
