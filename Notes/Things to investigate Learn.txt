@@ -1,9 +1,0 @@
-This file contains things to learn and investigate over time. 
-Do not action unless asked. 
-When asked present list
-If asked and actioned confirm status and write back to this file status of OPEN | LEARNING | CLOSED
-Open = Not investigated
-LEARNING = activity looking at
-CLOSED = Completed - no longer required to be displayed in list.
-
-Status of Closed - Only complete if there is a subdocument under notes with Name of Note and Key learnings. Non Verbose, but good for human retention.
