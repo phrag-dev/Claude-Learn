@@ -92,7 +92,7 @@ def load_topics() -> list[dict]:
                 in_content = True
                 continue
             if in_content and line.strip() and not line.startswith(">") and not line.startswith("---"):
-                summary = line.strip()
+                summary = line.strip().replace("**", "")
                 break
 
         topics.append({
